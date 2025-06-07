@@ -33,6 +33,8 @@ export default function RootLayout({ children }) {
           <Navbar />
           {children}
 
+
+{/* Implement actual search functionality with your MDX content?  */}
           {/* <FOOTER/>   */}
         </ThemeProvider>
       </body>

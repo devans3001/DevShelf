@@ -1,15 +1,8 @@
 "use client";
 
-import * as React from "react";
-import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
-} from "lucide-react";
-
+import { useState, useEffect } from "react";
+import { Search, Code, FileText, Settings, Github, Package, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   CommandDialog,
   CommandEmpty,
@@ -21,69 +14,108 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 
-export default function SearchBar() {
-  const [open, setOpen] = React.useState(false);
+// Mock search data - replace with your actual content
+const docsSections = [
+  { id: "snippets", name: "Code Snippets", icon: <Code className="w-4 h-4" /> },
+  { id: "boilerplates", name: "Boilerplates", icon: <FileText className="w-4 h-4" /> },
+  { id: "vscode", name: "VS Code Extensions", icon: <Zap className="w-4 h-4" /> },
+  { id: "packages", name: "NPM Packages", icon: <Package className="w-4 h-4" /> },
+];
 
-  React.useEffect(() => {
+const quickActions = [
+  { id: "settings", name: "Settings", icon: <Settings className="w-4 h-4" />, shortcut: "⌘S" },
+  { id: "github", name: "GitHub Repo", icon: <Github className="w-4 h-4" />, shortcut: "⌘G" },
+];
+
+export default function SearchBar() {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+
+  // Toggle with CMD+K
+  useEffect(() => {
     const down = (e) => {
-      if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);
       }
     };
-
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  // Filter results based on query
+  const filteredDocs = docsSections.filter((item) =>
+    item.name.toLowerCase().includes(query.toLowerCase())
+  );
+
+  const handleSelect = (id) => {
+    setOpen(false);
+    router.push(`/docs/${id}`);
+  };
+
   return (
     <>
-      <div className="flex items-center gap-10 border-2 px-4 py-2 rounded-2xl cursor-pointer bg-zinc-900 hover:bg-zinc-500" onClick={() => setOpen(true)}>
-        <p className="text-sm text-gray-300">Search Docs...</p>
-        <p className="text-muted-foreground text-sm">
-          Press{" "}
-          <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none">
-            <span className="text-xs">⌘</span>J
-          </kbd>
-        </p>
+      {/* Search Trigger */}
+      <div
+        className="flex items-center gap-2 border px-4 py-2 rounded-full cursor-pointer bg-white/80 dark:bg-zinc-800/80 hover:bg-white dark:hover:bg-zinc-700 transition-all duration-200 shadow-sm hover:shadow-md w-full max-w-md"
+        onClick={() => setOpen(true)}
+      >
+        <Search className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground flex-1">Search docs...</span>
+        <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-xs font-medium opacity-100">
+          <span className="text-xs">⌘</span>K
+        </kbd>
       </div>
+
+      {/* Command Menu */}
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Suggestions">
-            <CommandItem>
-              <Calendar />
-              <span>Calendar</span>
-            </CommandItem>
-            <CommandItem>
-              <Smile />
-              <span>Search Emoji</span>
-            </CommandItem>
-            <CommandItem>
-              <Calculator />
-              <span>Calculator</span>
-            </CommandItem>
-          </CommandGroup>
+        <CommandInput 
+          placeholder="Search documentation, snippets, or packages..." 
+          value={query}
+          onValueChange={setQuery}
+        />
+        <CommandList className="max-h-[70vh]">
+          <CommandEmpty>No results found. Try a different search term.</CommandEmpty>
+
+          {filteredDocs.length > 0 && (
+            <CommandGroup heading="Documentation">
+              {filteredDocs.map((item) => (
+                <CommandItem 
+                  key={item.id}
+                  value={item.id}
+                  onSelect={() => handleSelect(item.id)}
+                >
+                  <div className="mr-2">{item.icon}</div>
+                  <span>{item.name}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+
           <CommandSeparator />
-          <CommandGroup heading="Settings">
-            <CommandItem>
-              <User />
-              <span>Profile</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <CreditCard />
-              <span>Billing</span>
-              <CommandShortcut>⌘B</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Settings />
-              <span>Settings</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
+
+          <CommandGroup heading="Quick Actions">
+            {quickActions.map((action) => (
+              <CommandItem key={action.id}>
+                <div className="mr-2">{action.icon}</div>
+                <span>{action.name}</span>
+                {action.shortcut && (
+                  <CommandShortcut>{action.shortcut}</CommandShortcut>
+                )}
+              </CommandItem>
+            ))}
           </CommandGroup>
         </CommandList>
+
+        {/* Footer */}
+        <div className="p-2 text-xs text-muted-foreground border-t flex items-center justify-between">
+          <span>DevShelf v1.0</span>
+          <span className="flex items-center gap-2">
+            <kbd className="bg-muted px-1.5 py-0.5 rounded">↑↓</kbd> Navigate
+            <kbd className="bg-muted px-1.5 py-0.5 rounded">↵</kbd> Select
+          </span>
+        </div>
       </CommandDialog>
     </>
   );
