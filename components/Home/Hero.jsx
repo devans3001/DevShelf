@@ -5,6 +5,10 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { darkBackground, lightBackground } from "./longText";
+import {
+  SkeletonBlock,
+
+} from "skeleton-elements/react";
 import { useThemeDetector } from "@/hooks/useThemeDetector";
 
 function Hero() {
@@ -24,8 +28,20 @@ function Hero() {
 
    if (!mounted) {
     return (
-      <motion.section className="relative overflow-hidden container mx-auto px-4 py-32 md:py-40">
+      <motion.section className="relative overflow-hidden container mx-auto px-4 py-32 md:py-40 flex justify-center items-center"  > 
         {/* Empty fallback */}
+        <div className="w-full flex justify-center items-center flex-col gap-4">
+          
+        <SkeletonBlock width="20%" height="40px" borderRadius="50px" effect="wave"/>
+        <SkeletonBlock width="80%" height="80px" borderRadius="50px" effect="wave"/>
+        <SkeletonBlock width="10%" height="40px" borderRadius="50px" effect="wave"/>
+        <SkeletonBlock width="60%" height="40px" borderRadius="50px" effect="wave"/>
+        <div className="flex gap-3 w-full justify-center">
+
+        <SkeletonBlock width="10%" height="40px" borderRadius="50px" effect="wave"/>
+        <SkeletonBlock width="10%" height="40px" borderRadius="50px" effect="wave"/>
+        </div>
+        </div>
       </motion.section>
     );
   }

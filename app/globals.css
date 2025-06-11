@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin 'tailwind-scrollbar';
 
 /* @tailwind utilities; */
 
@@ -42,6 +43,8 @@
 }
 
 @theme inline {
+  --color-purple:#7E22CE;
+  --color-test:#28282b;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -125,32 +128,3 @@
   }
 }
 
-
-/* For WebKit browsers (Chrome, Safari, Edge) */
-::-webkit-scrollbar {
-  width: 8px; /* Reduced width */
-  border-radius: 20px;
-}
-
-::-webkit-scrollbar-track {
-  background: #25C26E; /* Track color */
-  border-radius: 20px;
-
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888; /* Thumb color */
-  background-color: green;
-  border-radius: 20px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: red; /* Hover color */
-}
-
-/* For Firefox */
-html {
-  scrollbar-width: thin; /* "auto" or "thin" */
-  scrollbar-color:#f1f1f1 var(--first) ; /* thumb and track color */
-  
-}

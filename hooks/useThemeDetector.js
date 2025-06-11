@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes';
 
 export const useThemeDetector = () => {
   const [mounted, setMounted] = useState(false);
-  const { theme, systemTheme } = useTheme();
+  const { theme,setTheme, systemTheme } = useTheme();
   
   useEffect(() => {
     setMounted(true);
@@ -18,6 +18,7 @@ export const useThemeDetector = () => {
     mounted,
     isDark,
     theme,
+    setTheme,
     systemTheme
   };
 };

@@ -1,7 +1,11 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import 'skeleton-elements/css';
+import { Toaster } from "@/components/ui/sonner"
+
 import ThemeProvider from "@/hooks/ThemeProvider";
 import { Navbar } from "@/components/Nav/NavBar";
+import { NavbarHeightProvider } from "@/hooks/NavbarHeightContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +24,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="scrollbar-thumb-purple-400 scrollbar-track-foreground scrollbar-thin" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
         <ThemeProvider
           attribute="class"
@@ -30,9 +34,12 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
+          <NavbarHeightProvider>
+
           <Navbar />
           {children}
-
+          </NavbarHeightProvider>
+  <Toaster />
 
 {/* Implement actual search functionality with your MDX content?  */}
           {/* <FOOTER/>   */}

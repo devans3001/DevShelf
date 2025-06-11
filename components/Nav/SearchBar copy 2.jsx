@@ -13,7 +13,6 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import { SearchTrigger } from "./SearchIcon";
 
 // Mock search data - replace with your actual content
 const docsSections = [
@@ -45,6 +44,7 @@ export default function SearchBar() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  // Filter results based on query
   const filteredDocs = docsSections.filter((item) =>
     item.name.toLowerCase().includes(query.toLowerCase())
   );
@@ -56,8 +56,19 @@ export default function SearchBar() {
 
   return (
     <>
-      <SearchTrigger onClick={() => setOpen(true)} />
+      {/* Search Trigger */}
+      <div
+        className="flex items-center gap-2 border px-4 py-2 rounded-full cursor-pointer bg-white/80 dark:bg-zinc-800/80 hover:bg-white dark:hover:bg-zinc-700 transition-all duration-200 shadow-sm hover:shadow-md w-full max-w-md"
+        onClick={() => setOpen(true)}
+      >
+        <Search className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground flex-1">Search docs...</span>
+        <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-xs font-medium opacity-100">
+          <span className="text-xs">⌘</span>K
+        </kbd>
+      </div>
 
+      {/* Command Menu */}
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput 
           placeholder="Search documentation, snippets, or packages..." 

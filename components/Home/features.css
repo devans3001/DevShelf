@@ -1,0 +1,25 @@
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  height: 0.3rem;
+  width: 0.3rem;
+  border-radius: 50%;
+  background: #A9C9FF;
+  transition: all 0.3s ease-in-out;
+  box-shadow:
+    0 0 0 0 #A9C9FF,
+    3rem 0 0 -0.3rem #A9C9FF,
+    -3rem 0 0 -0.3rem #A9C9FF,
+    0 3rem 0 -0.3rem #A9C9FF,
+    0 -3rem 0 -0.3rem #A9C9FF;
+}
+
+.tile:hover .dot {
+  height: 3rem;
+  width: 3rem;
+  transition: all 70ms linear;
+}
