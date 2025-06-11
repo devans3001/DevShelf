@@ -5,8 +5,9 @@ import { useNavbarHeight } from "@/hooks/NavbarHeightContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import  ScrollSpy  from "@/components/docs-scrollspy";
 
-export default function DocsLayout({ children }) {
+export default function DocsLayout({ children,params }) {
   const { navbarHeight } = useNavbarHeight();
+  console.log("params",params)
 
   return (
     <div

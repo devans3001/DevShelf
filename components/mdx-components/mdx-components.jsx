@@ -23,7 +23,8 @@ const slugger = new GithubSlugger();
 
 function Heading({ as: Tag, children, className = "" }) {
   const text = typeof children === "string" ? children : children?.toString?.();
-  const id = slugger.slug(text);
+ let rawId = slugger.slug(text);
+let id = rawId.replace(/-\d+$/, "");
 
   return (
     <Tag id={id} className={`${className} scroll-mt-24`}>

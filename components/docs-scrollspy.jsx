@@ -36,7 +36,7 @@ export default function ScrollSpy({}) {
     };
   }, [pathname, headings]);
 
-  console.log(headings)
+  // console.log(headings)
 
   if (!headings.length) {
     return (
@@ -64,7 +64,7 @@ export default function ScrollSpy({}) {
                 "block transition-colors hover:text-primary",
                 level === 3 && "pl-4",
                 activeId === id
-                  ? "text-primary font-medium"
+                  ? "text-primary font-bold ml-1"
                   : "text-muted-foreground"
               )}
               onClick={(e) => {

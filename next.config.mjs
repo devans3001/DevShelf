@@ -15,10 +15,7 @@ const nextConfig = {
   },
   transpilePackages: ["three", "framer-motion-3d", "framer-motion"],
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  experimental:{
-    serverActions: true,
-    mdxRs: true,
-  }
+  reactStrictMode:false
 };
 
 

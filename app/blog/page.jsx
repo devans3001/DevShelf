@@ -3,10 +3,13 @@
 import { Hammer, Code2, Clock, Construction } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useNavbarHeight } from "@/hooks/NavbarHeightContext";
 
 export default function BlogPage() {
+    const { navbarHeight } = useNavbarHeight();
+
   return (
-    <div className="min-h-[70vh] flex items-center justify-center">
+    <div className=" flex items-center justify-center" style={{height: `calc(100dvh - ${navbarHeight}px)`,}}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
