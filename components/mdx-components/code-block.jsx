@@ -52,7 +52,7 @@ export function CodeBlock({ children, language = 'jsx' }) {
         {copied ? (
           <Check className="w-4 h-4 text-green-400 transition-transform duration-200 scale-110" />
         ) : (
-          <Copy className="w-4 h-4" />
+          <Copy className="w-4 h-4 cursor-pointer" />
         )}
       </button>
 

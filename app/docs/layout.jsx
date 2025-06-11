@@ -3,6 +3,7 @@ import { DocsSidebar } from "@/components/docs-sidebar";
 import { DocsPager } from "@/components/docs-pager";
 import { useNavbarHeight } from "@/hooks/NavbarHeightContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import  ScrollSpy  from "@/components/docs-scrollspy";
 
 export default function DocsLayout({ children }) {
   const { navbarHeight } = useNavbarHeight();
@@ -14,7 +15,7 @@ export default function DocsLayout({ children }) {
     >
       {/* Left Sidebar */}
       <aside
-        className="fixed left-0 w-64 border-r overflow-y-auto"
+        className="fixed left-0 w-64 overflow-y-auto"
         style={{
           top: `${navbarHeight}px`,
           height: `calc(100dvh - ${navbarHeight}px)`,
@@ -45,19 +46,14 @@ export default function DocsLayout({ children }) {
 
       {/* Right Table of Contents */}
       <aside
-        className="fixed right-0 w-80 border-l p-4 overflow-y-auto"
+        className="fixed right-0 w-80 p-6 overflow-y-auto"
         style={{
           top: `${navbarHeight}px`,
           height: `calc(100dvh - ${navbarHeight}px)`,
         }}
       >
-        <h2 className="text-sm font-semibold mb-4">On this page</h2>
-        {/* TOC will be populated dynamically */}
-        <div className="space-y-2 text-sm text-muted-foreground">
-          <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-          <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-          <div className="h-4 w-2/3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-        </div>
+     
+        <ScrollSpy/>
       </aside>
     </div>
   );

@@ -1,22 +1,29 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { getDocBySlug } from '@/lib/mdx';
+import { getDocBySlug, useMdxDocs } from '@/lib/mdx';
 import { CustomComponents } from '@/components/mdx-components/mdx-components';
+import ClientWrapper from '@/hooks/ClientWrapper';
 
 export default async function DocPage({ params }) {
   const { category, slug } = await params;
-  const doc = await getDocBySlug(category, slug);
+  // const doc = await getDocBySlug(category, slug);
 
-  if (!doc) return <div>Not found</div>;
+  const {doc,headings} = await useMdxDocs(category, slug);
 
-  // console.log(`Rendering doc: ${doc.source} `);
+    // console.log(`slug: ${slug} `);
+  if (!doc) return <div>
+    <h1 className="text-2xl font-bold">Document not found</h1>
+    <p className="text-muted-foreground">The requested document does not exist.</p>
+  </div>;
+
 
   return (
-    <div className="prose dark:prose-invert max-w-4xl mx-auto">
+    <div className="prose dark:prose-invert mx-auto">
       {/* <h1>{doc.frontMatter.title}</h1> */}
       <MDXRemote
         source={doc?.source}
         components={CustomComponents}
       />
+       <ClientWrapper headings={headings} />
     </div>
   );
 }

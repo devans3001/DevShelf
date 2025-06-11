@@ -1,58 +1,56 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Lightbulb, AlertTriangle } from "lucide-react";
-import { Alert,AlertTitle,AlertDescription } from "../ui/alert";
+import GithubSlugger from "github-slugger";
+import {
+  Library,
+  Code2,
+  Box,
+  Search,
+  Moon,
+  Copy,
+  RefreshCw,
+} from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
+import { Button } from "../ui/button";
 import { CodeBlock } from "./code-block";
-// import CodeBlock from "./code-block";
 
-// function CodeBlock({ language, title, children }) {
-//   return (
-//     <div className="my-4 border rounded-md overflow-hidden">
-//       {title && (
-//         <div className="px-4 py-2 bg-secondary text-sm font-medium">
-//           {title}
-//         </div>
-//       )}
-//       <pre className={`p-4 overflow-x-auto language-${language}`}>
-//         <code>{children}</code>
-//       </pre>
-//     </div>
-//   );
-// }
+import { CommonMistake, ProTip } from "./boxs";
+import { Callout, Card, CardGrid } from "./cards";
+import TechTag from "./texh-tag";
 
+const slugger = new GithubSlugger();
 
-// ProTip box
-export function ProTip({ children }) {
+function Heading({ as: Tag, children, className = "" }) {
+  const text = typeof children === "string" ? children : children?.toString?.();
+  const id = slugger.slug(text);
+
   return (
-    <div className="bg-yellow-100 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-4 my-6 rounded-md">
-      <div className="flex items-start gap-2 text-yellow-800 dark:text-yellow-100">
-        <Lightbulb className="w-5 h-5 mt-1" />
-        <div>{children}</div>
-      </div>
-    </div>
-  );
-}
-
-// CommonMistake box
-export function CommonMistake({ children }) {
-  return (
-    <div className="bg-red-100 dark:bg-red-900/20 border-l-4 border-red-400 p-4 my-6 rounded-md">
-      <div className="flex items-start gap-2 text-red-800 dark:text-red-100">
-        <AlertTriangle className="w-5 h-5 mt-1" />
-        <div>{children}</div>
-      </div>
-    </div>
+    <Tag id={id} className={`${className} scroll-mt-24`}>
+      {children}
+    </Tag>
   );
 }
 
 export const CustomComponents = {
-  h1: (props) => <h1 className="text-3xl font-bold mt-8 mb-4" {...props} />,
-  h2: (props) => <h2 className="text-2xl font-bold mt-6 mb-3" {...props} />,
-  h3: (props) => <h3 className="text-xl font-bold mt-4 mb-2" {...props} />,
+  h1: (props) => (
+    <Heading as="h1" className="text-3xl font-bold mt-8 mb-4" {...props} />
+  ),
+  h2: (props) => (
+    <Heading as="h2" className="text-2xl font-bold mt-6 mb-3" {...props} />
+  ),
+  h3: (props) => (
+    <Heading as="h3" className="text-xl font-bold mt-4 mb-2" {...props} />
+  ),
   p: (props) => <p className="my-4" {...props} />,
+  hr: (props) => <hr {...props} />,
   a: (props) => (
-    <Link href={props.href || "#"} className="text-blue-600 hover:underline" {...props} />
+    <Link
+      href={props.href || "#"}
+      target="_blank"
+      className="text-blue-600 hover:underline"
+      {...props}
+    />
   ),
   img: (props) => (
     <Image
@@ -64,12 +62,27 @@ export const CustomComponents = {
     />
   ),
   pre: (props) => (
-    <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto my-6" {...props} />
+    <pre
+      className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto my-6"
+      {...props}
+    />
   ),
   CodeBlock: CodeBlock,
   Alert: Alert,
-    AlertTitle: AlertTitle,
-    AlertDescription: AlertDescription,
+  AlertTitle: AlertTitle,
+  AlertDescription: AlertDescription,
   ProTip: ProTip,
   CommonMistake: CommonMistake,
+  Button: Button,
+  Callout: Callout,
+  Card: Card,
+  TechTag: TechTag,
+  CardGrid: CardGrid,
+  Library,
+  Code2,
+  Box: Box,
+  Search,
+  Moon,
+  Copy,
+  RefreshCw,
 };

@@ -13,7 +13,7 @@ React Hooks revolutionized functional components by enabling state management an
   useState is the most fundamental hook for managing local component state.
 </ProTip>
 
-<CodeBlock language="jsx" showCopyButton={true} requireLogin={false}>
+<CodeBlock language="jsx" showCopyButton={true}>
 {`import React, { useState } from 'react';
 
 function Counter() {
@@ -22,17 +22,15 @@ function Counter() {
 const [count, setCount] = useState(0);
 
 return (
+
 <div>
-<p>You clicked {count} times</p>
-<button onClick={() => setCount(count + 1)}>
-Increment
-</button>
-<button onClick={() => setCount(prevCount => prevCount - 1)}>
-Decrement (functional update)
-</button>
+  <p>You clicked {count} times</p>
+  <button onClick={() => setCount(count + 1)}>Increment</button>
+  <button onClick={() => setCount((prevCount) => prevCount - 1)}>
+    Decrement (functional update)
+  </button>
 </div>
-);
-}`}
+); }`}
 
 </CodeBlock>
 
@@ -41,13 +39,12 @@ Decrement (functional update)
   to avoid stale closures and ensure proper reactivity.
 </CommonMistake>
 
-<Alert type="warning" title="">
-  <AlertTitle>Performance Consideration</AlertTitle>
-  <AlertDescription>
+<Callout type="info" title="Performance Consideration">
+
     Avoid complex logic inside the render method — move expensive computations
     to useMemo or useEffect to prevent performance bottlenecks.
-  </AlertDescription>
-</Alert>
+
+</Callout>
 
 ---
 
@@ -97,12 +94,12 @@ if (loading) return <div>Loading...</div>;
 if (!user) return <div>No user found</div>;
 
 return (
+
 <div>
-<h2>{user.name}</h2>
-<p>{user.bio}</p>
+  <h2>{user.name}</h2>
+  <p>{user.bio}</p>
 </div>
-);
-}`}
+); }`}
 
 </CodeBlock>
 
@@ -112,10 +109,11 @@ return (
   balance.
 </CommonMistake>
 
-<Alert type="info" title="Architecture Tip">
+<Callout type="info" title="Architecture Tip">
   You can (and should) use multiple useEffect calls to separate unrelated logic
   into different effects for better maintainability.
-</Alert>
+</Callout>
+
 
 ---
 
@@ -144,14 +142,12 @@ inputRef.current.focus();
 }, []);
 
 return (
+
 <div>
-<input ref={inputRef} type="text" />
-<button onClick={() => inputRef.current.focus()}>
-Focus Input
-</button>
+  <input ref={inputRef} type="text" />
+  <button onClick={() => inputRef.current.focus()}>Focus Input</button>
 </div>
-);
-}`}
+); }`}
 
 </CodeBlock>
 
@@ -161,10 +157,10 @@ Focus Input
   each time.
 </CommonMistake>
 
-<Alert type="tip" title="Advanced Pattern">
+<Callout type="info" title="Advanced Pattern">
   useRef is invaluable for keeping track of previous state values by combining
   with useEffect to "remember" past values.
-</Alert>
+</Callout>
 
 ---
 
@@ -187,13 +183,13 @@ item.name.toLowerCase().includes(filterTerm.toLowerCase())
 }, [list, filterTerm]); // Only recalculate when list or filterTerm changes
 
 return (
+
 <ul>
-{filteredList.map(item => (
-<li key={item.id}>{item.name}</li>
-))}
+  {filteredList.map((item) => (
+    <li key={item.id}>{item.name}</li>
+  ))}
 </ul>
-);
-}`}
+); }`}
 
 </CodeBlock>
 
@@ -202,10 +198,10 @@ return (
   benefits for simple computations. Profile first!
 </CommonMistake>
 
-<Alert type="warning" title="Dependency Warning">
+<Callout type="warning" title="Dependency Warning">
   Incorrect dependency arrays can lead to stale values. Consider using the
   ESLint exhaustive-deps rule to catch these issues.
-</Alert>
+</Callout>
 
 ---
 
@@ -236,16 +232,13 @@ console.log(\`Current value: \${value}\`);
 }, [value]);
 
 return (
+
 <div>
-<button onClick={increment}>Count: {count}</button>
-<input
-value={value}
-onChange={(e) => setValue(e.target.value)}
-/>
-<MemoizedChild onLog={logValue} />
+  <button onClick={increment}>Count: {count}</button>
+  <input value={value} onChange={(e) => setValue(e.target.value)} />
+  <MemoizedChild onLog={logValue} />
 </div>
-);
-}`}
+); }`}
 
 </CodeBlock>
 
@@ -254,7 +247,7 @@ onChange={(e) => setValue(e.target.value)}
   function captures old values from previous renders.
 </CommonMistake>
 
-<Alert type="success" title="Best Practice">
+<Callout type="info" title="Best Practice">
   Combine useCallback with React.memo for optimal performance in component trees
   with frequent re-renders.
-</Alert>
+</Callout>
