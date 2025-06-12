@@ -1,9 +1,14 @@
-
-
 // app/learn-more/page.js
-import { BookOpenText, Users, GitFork, Globe } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { BookOpenText, Users, GitFork, Globe } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function LearnMorePage() {
   return (
@@ -13,7 +18,8 @@ export default function LearnMorePage() {
           About <span className="text-primary">DevShelf</span>
         </h1>
         <p className="text-xl text-muted-foreground">
-          The developer's curated toolkit designed to accelerate your workflow and elevate your projects
+          The developer's curated toolkit designed to accelerate your workflow
+          and elevate your projects
         </p>
       </section>
 
@@ -21,24 +27,33 @@ export default function LearnMorePage() {
         <div>
           <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
           <p className="text-lg text-muted-foreground mb-6">
-            DevShelf was born from the frustration of constantly searching for the same code snippets, tools, and configurations across different projects. We aim to create a centralized hub for developers to access high-quality resources quickly.
+            DevShelf was born from the frustration of constantly searching for
+            the same code snippets, tools, and configurations across different
+            projects. We aim to create a centralized hub for developers to
+            access high-quality resources quickly.
           </p>
           <div className="space-y-4">
             <div className="flex items-start gap-4">
               <GitFork className="w-6 h-6 mt-1 text-primary" />
               <div>
-                <h3 className="font-semibold text-lg">Open Source Philosophy</h3>
+                <h3 className="font-semibold text-lg">
+                  Open Source Philosophy
+                </h3>
                 <p className="text-muted-foreground">
-                  Built by the community, for the community. Contribute and help others grow.
+                  Built by the community, for the community. Contribute and help
+                  others grow.
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-4">
               <Globe className="w-6 h-6 mt-1 text-primary" />
               <div>
-                <h3 className="font-semibold text-lg">Universal Accessibility</h3>
+                <h3 className="font-semibold text-lg">
+                  Universal Accessibility
+                </h3>
                 <p className="text-muted-foreground">
-                  Designed to work with any tech stack, from React to Svelte, Node to Python.
+                  Designed to work with any tech stack, from React to Svelte,
+                  Node to Python.
                 </p>
               </div>
             </div>
@@ -78,12 +93,16 @@ export default function LearnMorePage() {
           Explore our comprehensive documentation or contribute to the project
         </p>
         <div className="flex gap-4 justify-center">
-          <Button size="lg" className="px-8">
-            View Documentation
-          </Button>
-          <Button variant="outline" size="lg" className="px-8">
-            GitHub Repository
-          </Button>
+          <Link href={"/docs"}>
+            <Button size="lg" className="px-8">
+              View Documentation
+            </Button>
+          </Link>
+          <Link href="#">
+            <Button variant="outline" size="lg" className="px-8">
+              GitHub Repository
+            </Button>
+          </Link>
         </div>
       </section>
     </div>
