@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useHeaders } from "@/hooks/HeadersContexr";
+import DocScrollToTop from "./dosc-scroll-to-top";
+import { useView } from "@/hooks/useView";
 
 export default function ScrollSpy({}) {
   const [activeId, setActiveId] = useState(null);
+ 
 
   const pathname = usePathname();
   const { headers: headings } = useHeaders();
@@ -79,6 +82,7 @@ export default function ScrollSpy({}) {
           </li>
         ))}
       </ul>
+      <DocScrollToTop/>
     </div>
   );
 }

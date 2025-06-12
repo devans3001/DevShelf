@@ -21,9 +21,11 @@ export default async function DocPage({ params }) {
 
   return (
     <>
-      <div className="prose dark:prose-invert mx-auto">
-        <MDXRemote source={doc?.source} components={CustomComponents} />
-        <ClientWrapper headings={headings} />
+      <div className="flex gap-8">
+        <div className="prose dark:prose-invert flex-1">
+          <MDXRemote source={doc?.source} components={CustomComponents} />
+          <ClientWrapper headings={headings} />
+        </div>
       </div>
       <DocsPager currentSlug={`docs/${category}/${slug}`} />
     </>
