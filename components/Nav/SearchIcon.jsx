@@ -32,7 +32,7 @@ export function SearchTrigger({ onClick }) {
 
   return (
     <motion.div
-      className="flex items-center gap-2 border px-4 py-2 rounded-full cursor-pointer bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm w-full max-w-md"
+      className="flex items-center gap-2 md:border p-0 md:px-4 md:py-2 rounded-full cursor-pointer bg-transparent md:bg-white/80 md:dark:bg-zinc-800/80 backdrop-blur-sm w-full max-w-md"
       onClick={onClick}
       whileHover={{
         scale: 1.02,
@@ -83,7 +83,7 @@ export function SearchTrigger({ onClick }) {
         </motion.span>
       )}
 
-      <motion.div
+     {md && <motion.div
         initial={{ scale: 1 }}
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 500 }}
@@ -91,7 +91,7 @@ export function SearchTrigger({ onClick }) {
         <kbd className="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-xs font-medium opacity-100">
           <span className="text-xs">⌘</span>K
         </kbd>
-      </motion.div>
+      </motion.div>}
     </motion.div>
   );
 }

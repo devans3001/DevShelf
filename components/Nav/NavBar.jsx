@@ -9,22 +9,22 @@ import Routes from "./Routes";
 import { useView } from "@/hooks/useView";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useNavbarHeight } from "@/hooks/NavbarHeightContext";
+import MenuBar from "./Menu";
+import DevShelf from "./DevShelf";
 
 export function Navbar() {
- 
-
-  const { navbarHeight, setNavbarHeight } = useNavbarHeight();
+  const { setNavbarHeight } = useNavbarHeight();
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 100], [0, -5]);
-const {lg} = useView()
-const navRef = useRef(null)
+  const { lg } = useView();
+  const navRef = useRef(null);
 
-useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (navRef.current) {
       setNavbarHeight(navRef.current.offsetHeight);
     }
   }, [setNavbarHeight]);
-  
+
   return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
@@ -43,12 +43,12 @@ useLayoutEffect(() => {
         </div>
       </motion.div>
 
-      <div className=" mx-auto px-6 md:px-8">
+      <div className=" mx-auto px-3 md:px-8">
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center gap-2">
               <motion.div whileHover={{ rotate: 10 }}>
-                <Logo/>
+                <Logo />
               </motion.div>
               <motion.p
                 className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent text-3xl"
@@ -58,12 +58,12 @@ useLayoutEffect(() => {
               </motion.p>
             </Link>
 
-            <Routes view={lg}/>
+            <Routes view={lg} />
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center md:gap-4 gap-2">
             <SearchBar />
-            <ModeToggle />
+            {lg ? <ModeToggle /> : <MenuBar/>}
           </div>
         </div>
       </div>

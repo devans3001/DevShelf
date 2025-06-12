@@ -11,25 +11,35 @@ import { toast } from "sonner";
 export function CodeBlock({ children, language = "jsx" }) {
   const [copied, setCopied] = useState(false);
   const [formattedCode, setFormattedCode] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     async function formatCode() {
       try {
         const result = await prettier.format(children.trim(), {
+          proseWrap: "always",
           parser: "babel",
           plugins: [parserBabel, pluginEstree],
-          semi: false,
-          singleQuote: true,
+          semi: true,
+          singleQuote: false,
+          printWidth: isMobile ? 60 : 80,
         });
         setFormattedCode(result);
       } catch (err) {
         console.error("Prettier format error:", err);
-        setFormattedCode(children.trim()); // fallback
+        setFormattedCode(children.trim());
       }
     }
 
     formatCode();
-  }, [children]);
+  }, [children, isMobile]);
 
   const handleCopy = async () => {
     try {
@@ -38,35 +48,48 @@ export function CodeBlock({ children, language = "jsx" }) {
       toast.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      toast.error("Failed to copy!");
+      // Fallback for browsers that don't support clipboard API
+      const textArea = document.createElement('textarea');
+      textArea.value = children.trim();
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        toast.success("Copied to clipboard!");
+      } catch (err) {
+        toast.error("Failed to copy!");
+      }
+      document.body.removeChild(textArea);
     }
   };
 
   return (
-    <div className="relative my-6 overflow-x-hidden">
-      <div className="group">
-        <button
-          onClick={handleCopy}
-          className="absolute top-3 right-3 z-10 bg-black/80 text-white p-1.5 rounded-md hover:bg-black/90 transition opacity-0 group-hover:opacity-100"
-          aria-label="Copy code"
-        >
-          {copied ? (
-            <Check className="w-4 h-4 text-green-400 transition-transform duration-200 scale-110" />
-          ) : (
-            <Copy className="w-4 h-4 cursor-pointer" />
-          )}
-        </button>
+    <div className="relative my-6 w-full max-w-full overflow-hidden group">
+      <button
+        onClick={handleCopy}
+        className={`absolute top-3 right-3 z-10 bg-black/80 text-white p-1.5 rounded-md hover:bg-black/90 transition ${
+          isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+        }`}
+        aria-label="Copy code"
+      >
+        {copied ? (
+          <Check className="w-4 h-4 text-green-400 transition-transform duration-200 scale-110" />
+        ) : (
+          <Copy className="w-4 h-4 cursor-pointer" />
+        )}
+      </button>
 
-        {formattedCode && (
-          <Highlight
-            theme={themes.shadesOfPurple}
-            code={formattedCode}
-            language={language}
-          >
-            {({ className, style, tokens, getLineProps, getTokenProps }) => (
+      {formattedCode && (
+        <Highlight
+          theme={themes.shadesOfPurple}
+          code={formattedCode}
+          language={language}
+        >
+          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+            <div className="overflow-x-auto rounded-lg w-full">
               <pre
-                className={`${className} overflow-x-auto max-w-full rounded-lg text-sm p-4 pl-6`}
-                style={style}
+                className={`${className} p-4 pl-6 text-xs sm:text-sm`}
+                style={{ ...style, overflowX: 'auto' }}
               >
                 {tokens.map((line, i) => {
                   const { key, ...lineProps } = getLineProps({ line, key: i });
@@ -75,7 +98,7 @@ export function CodeBlock({ children, language = "jsx" }) {
                       <span className="table-cell pr-4 select-none text-right text-gray-500">
                         {i + 1}
                       </span>
-                      <span className="table-cell">
+                      <span className="table-cell whitespace-pre-wrap">
                         {line.map((token, j) => {
                           const { key, ...tokenProps } = getTokenProps({
                             token,
@@ -88,10 +111,10 @@ export function CodeBlock({ children, language = "jsx" }) {
                   );
                 })}
               </pre>
-            )}
-          </Highlight>
-        )}
-      </div>
+            </div>
+          )}
+        </Highlight>
+      )}
     </div>
   );
 }

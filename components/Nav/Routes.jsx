@@ -8,14 +8,16 @@ import { MoveUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-function Routes({ view }) {
-  const pathname = usePathname();
-
-  const routes = [
+ export const routes = [
     { name: "Explore Docs", path: "/docs" },
     { name: "Blog", path: "/blog" },
     { name: "Showcase", path: "https://www.w3schools.com/" },
   ];
+
+function Routes({ view }) {
+  const pathname = usePathname();
+
+ 
   return (
     <>
       {view && routes.map((ele) => {

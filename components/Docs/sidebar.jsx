@@ -7,6 +7,7 @@ import { useNavbarHeight } from "@/hooks/NavbarHeightContext";
 
 function Sidebar() {
   const { navbarHeight } = useNavbarHeight();
+
   return (
     <aside
       className="fixed left-0 w-64 overflow-y-auto"

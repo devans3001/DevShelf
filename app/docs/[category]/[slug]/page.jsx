@@ -21,8 +21,8 @@ export default async function DocPage({ params }) {
 
   return (
     <>
-      <div className="flex gap-8">
-        <div className="prose dark:prose-invert flex-1">
+      <div className="flex gap-8 ">
+        <div className="prose-vercel dark:prose-invert flex-1 ">
           <MDXRemote source={doc?.source} components={CustomComponents} />
           <ClientWrapper headings={headings} />
         </div>

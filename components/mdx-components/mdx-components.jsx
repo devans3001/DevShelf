@@ -33,6 +33,7 @@ let id = rawId.replace(/-\d+$/, "");
   );
 }
 
+
 export const CustomComponents = {
   h1: (props) => (
     <Heading as="h1" className="text-3xl font-bold mt-8 mb-4" {...props} />

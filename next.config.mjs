@@ -11,6 +11,11 @@ const nextConfig = {
         port: '',
         pathname: '/512/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+       
+      },
     ],
   },
   transpilePackages: ["three", "framer-motion-3d", "framer-motion"],

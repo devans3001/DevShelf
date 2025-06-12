@@ -9,7 +9,7 @@ export default async function DocsIndexPage({}) {
 
   return (
     <>
-    <div className="flex gap-8">
+    <div className="flex gap-8 ">
       <div className="prose dark:prose-invert flex-1">
         <MDXRemote source={raw} components={CustomComponents} />
         <ClientWrapper headings={headings} />

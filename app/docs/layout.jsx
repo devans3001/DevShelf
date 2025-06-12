@@ -1,19 +1,21 @@
+"use client";
 import Sidebar from "@/components/Docs/sidebar";
 import ScrollspyPage from "@/components/Docs/Scrollspy";
+import { useView } from "@/hooks/useView";
 
-export default async function DocsLayout({ children, params }) {
+export default function DocsLayout({ children }) {
+  const { view,lg } = useView();
 
+  const isScroll = view >= 1278;
   return (
     <div className="flex min-h-screen w-full">
-      <Sidebar />
+      {lg && <Sidebar />}
 
-      <main className="flex-1 pl-64 pr-80">
-        <div className="max-w-3xl mx-auto py-8 px-4">
-          {children}
-        </div>
+      <main className={`flex-1 ${lg ?"pl-64":""} ${isScroll ?"pr-80":""}`}>
+        <div className={`max-w-3xl mx-auto py-8 px-4`}>{children}</div>
       </main>
 
-      <ScrollspyPage />
+      {isScroll && <ScrollspyPage />}
     </div>
   );
 }
