@@ -5,11 +5,9 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { darkBackground, lightBackground } from "./longText";
-import {
-  SkeletonBlock,
-
-} from "skeleton-elements/react";
+import { SkeletonBlock } from "skeleton-elements/react";
 import { useThemeDetector } from "@/hooks/useThemeDetector";
+import DevShelf from "../RocketGsap";
 
 function Hero() {
   const { mounted, isDark } = useThemeDetector();
@@ -26,30 +24,57 @@ function Hero() {
     },
   };
 
-   if (!mounted) {
+  if (!mounted) {
     return (
-      <motion.section className="relative overflow-hidden container mx-auto px-4 py-32 md:py-40 flex justify-center items-center"  > 
+      <motion.section className="relative overflow-hidden container mx-auto px-4 py-32 md:py-40 flex justify-center items-center">
         {/* Empty fallback */}
         <div className="w-full flex justify-center items-center flex-col gap-4">
-          
-        <SkeletonBlock width="20%" height="40px" borderRadius="50px" effect="wave"/>
-        <SkeletonBlock width="80%" height="80px" borderRadius="50px" effect="wave"/>
-        <SkeletonBlock width="10%" height="40px" borderRadius="50px" effect="wave"/>
-        <SkeletonBlock width="60%" height="40px" borderRadius="50px" effect="wave"/>
-        <div className="flex gap-3 w-full justify-center">
-
-        <SkeletonBlock width="10%" height="40px" borderRadius="50px" effect="wave"/>
-        <SkeletonBlock width="10%" height="40px" borderRadius="50px" effect="wave"/>
-        </div>
+          <SkeletonBlock
+            width="20%"
+            height="40px"
+            borderRadius="50px"
+            effect="wave"
+          />
+          <SkeletonBlock
+            width="80%"
+            height="80px"
+            borderRadius="50px"
+            effect="wave"
+          />
+          <SkeletonBlock
+            width="10%"
+            height="40px"
+            borderRadius="50px"
+            effect="wave"
+          />
+          <SkeletonBlock
+            width="60%"
+            height="40px"
+            borderRadius="50px"
+            effect="wave"
+          />
+          <div className="flex gap-3 w-full justify-center">
+            <SkeletonBlock
+              width="10%"
+              height="40px"
+              borderRadius="50px"
+              effect="wave"
+            />
+            <SkeletonBlock
+              width="10%"
+              height="40px"
+              borderRadius="50px"
+              effect="wave"
+            />
+          </div>
         </div>
       </motion.section>
     );
   }
 
-
   return (
     <motion.section
-      className="relative overflow-hidden container mx-auto px-4 py-32 md:py-40"
+      className="relative overflow-hidden container mx-auto px-4 py-25 md:py-5"
       style={isDark ? darkBackground : lightBackground}
       variants={animatedBackground}
       initial="initial"
@@ -65,6 +90,10 @@ function Hero() {
         transition={{ duration: 0.5 }}
         className="relative max-w-4xl mx-auto text-center z-10"
       >
+        {/* 🧠 THIS IS WHERE YOU ADD IT */}
+        <div className="flex justify-center items-center bg-red-500">
+          <DevShelf />
+        </div>
         <motion.div
           whileHover={{ scale: 1.05 }}
           className="inline-flex items-center gap-2 px-4 py-2 bg-background/80 backdrop-blur-sm rounded-full mb-6 border border-border/50"

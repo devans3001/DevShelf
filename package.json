@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.3.3",
@@ -31,6 +32,7 @@
     "fs": "^0.0.1-security",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.513.0",
     "next": "15.3.3",
     "next-mdx-remote": "^5.0.0",

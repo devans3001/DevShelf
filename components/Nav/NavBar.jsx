@@ -29,12 +29,12 @@ export function Navbar() {
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="sticky top-0 z-50 w-full border-b-2"
+      className="sticky top-0 z-50 w-full md:border-b-2"
       ref={navRef}
     >
       <motion.div
         style={{ y: backgroundY }}
-        className="absolute inset-0 -z-10 w-full h-full overflow-hidden"
+        className="absolute inset-0 -z-10 w-full h-full overflow-hidden "
       >
         <div className="absolute inset-0 opacity-[3%] dark:opacity-[1%] noise-texture" />
 

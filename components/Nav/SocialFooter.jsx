@@ -22,13 +22,13 @@ export default function SocialFooter() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative block p-2 dark:bg-foreground text-center rounded-full overflow-hidden border-4  z-10 group"
+                className="relative block p-2 bg-foreground text-center rounded-full overflow-hidden border-4  z-10 group"
               >
                 <span
                   className="relative z-20 flex items-center justify-center h-full transition-transform duration-500 group-hover:rotate-[360deg]"
                 >
                   <Icon
-                    className="w-8 h-8 stroke-[#262626] group-hover:stroke-white transition-colors duration-500"
+                    className="w-8 h-8 stroke-background group-hover:stroke-white transition-colors text-background duration-500"
                   />
                 </span>
                 <span

@@ -7,18 +7,15 @@ import parserBabel from "prettier/plugins/babel";
 import pluginEstree from "prettier/plugins/estree";
 import { Check, Copy } from "lucide-react";
 import { toast } from "sonner";
+import { useThemeDetector } from "@/hooks/useThemeDetector";
+import { useView } from "@/hooks/useView";
 
 export function CodeBlock({ children, language = "jsx" }) {
   const [copied, setCopied] = useState(false);
   const [formattedCode, setFormattedCode] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const { md } = useView();
+  const { isDark } = useThemeDetector();
+  const theme = isDark ? themes.shadesOfPurple : themes.vsDark;
 
   useEffect(() => {
     async function formatCode() {
@@ -29,7 +26,7 @@ export function CodeBlock({ children, language = "jsx" }) {
           plugins: [parserBabel, pluginEstree],
           semi: true,
           singleQuote: false,
-          printWidth: isMobile ? 60 : 80,
+          printWidth: !md ? 60 : 80,
         });
         setFormattedCode(result);
       } catch (err) {
@@ -39,7 +36,7 @@ export function CodeBlock({ children, language = "jsx" }) {
     }
 
     formatCode();
-  }, [children, isMobile]);
+  }, [children, md]);
 
   const handleCopy = async () => {
     try {
@@ -49,12 +46,12 @@ export function CodeBlock({ children, language = "jsx" }) {
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       // Fallback for browsers that don't support clipboard API
-      const textArea = document.createElement('textarea');
+      const textArea = document.createElement("textarea");
       textArea.value = children.trim();
       document.body.appendChild(textArea);
       textArea.select();
       try {
-        document.execCommand('copy');
+        document.execCommand("copy");
         toast.success("Copied to clipboard!");
       } catch (err) {
         toast.error("Failed to copy!");
@@ -68,7 +65,7 @@ export function CodeBlock({ children, language = "jsx" }) {
       <button
         onClick={handleCopy}
         className={`absolute top-3 right-3 z-10 bg-black/80 text-white p-1.5 rounded-md hover:bg-black/90 transition ${
-          isMobile ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+          !md ? "opacity-100" : "opacity-0 group-hover:opacity-100"
         }`}
         aria-label="Copy code"
       >
@@ -80,16 +77,12 @@ export function CodeBlock({ children, language = "jsx" }) {
       </button>
 
       {formattedCode && (
-        <Highlight
-          theme={themes.shadesOfPurple}
-          code={formattedCode}
-          language={language}
-        >
+        <Highlight theme={theme} code={formattedCode} language={language}>
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <div className="overflow-x-auto rounded-lg w-full">
               <pre
                 className={`${className} p-4 pl-6 text-xs sm:text-sm`}
-                style={{ ...style, overflowX: 'auto' }}
+                style={{ ...style, overflowX: "auto" }}
               >
                 {tokens.map((line, i) => {
                   const { key, ...lineProps } = getLineProps({ line, key: i });
