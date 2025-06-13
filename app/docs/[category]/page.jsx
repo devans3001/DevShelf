@@ -4,6 +4,29 @@ import { getDocsParams } from "@/lib/mdx-all";
 import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
 
+export async function generateMetadata({params}) {
+const { category } = await params;
+
+  const { frontmatter } = await getDocsParams(category);
+
+  return {
+    title: frontmatter.title,
+    description: frontmatter.description,
+    openGraph: {
+      title: frontmatter.title,
+      description: frontmatter.description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: frontmatter.title,
+      description: frontmatter.description,
+    },
+  };
+}
+
+
+
 export default async function DocsIndexPage({ params }) {
   const { category } = await params;
 
