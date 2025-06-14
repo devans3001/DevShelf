@@ -1,34 +1,35 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Highlight, themes } from "prism-react-renderer";
+import React, { useState, useEffect, useTransition } from "react";
 import prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import pluginEstree from "prettier/plugins/estree";
 import { Check, Copy } from "lucide-react";
 import { toast } from "sonner";
-import { useThemeDetector } from "@/hooks/useThemeDetector";
 import { useView } from "@/hooks/useView";
+import CodeBlockHighlight from "./code-block-highlight";
+import CodeBlockSkeleton from "./code-block-skeleton";
 
-export function CodeBlock({ children, language = "jsx" }) {
+export function CodeBlock({ children, language = "jsx", filename = "app.js" }) {
   const [copied, setCopied] = useState(false);
   const [formattedCode, setFormattedCode] = useState("");
+  const [isPending, startTransition] = useTransition();
   const { md } = useView();
-  const { isDark } = useThemeDetector();
-  const theme = isDark ? themes.shadesOfPurple : themes.vsDark;
 
   useEffect(() => {
     async function formatCode() {
       try {
-        const result = await prettier.format(children.trim(), {
-          proseWrap: "always",
-          parser: "babel",
-          plugins: [parserBabel, pluginEstree],
-          semi: true,
-          singleQuote: false,
-          printWidth: !md ? 60 : 80,
+        startTransition(async () => {
+          const result = await prettier.format(children.trim(), {
+            proseWrap: "always",
+            parser: "babel",
+            plugins: [parserBabel, pluginEstree],
+            semi: true,
+            singleQuote: false,
+            printWidth: !md ? 60 : 80,
+          });
+          setFormattedCode(result);
         });
-        setFormattedCode(result);
       } catch (err) {
         console.error("Prettier format error:", err);
         setFormattedCode(children.trim());
@@ -62,6 +63,11 @@ export function CodeBlock({ children, language = "jsx" }) {
 
   return (
     <div className="relative my-6 w-full max-w-full overflow-hidden group">
+      {filename && !isPending && (
+        <div className="bg-muted text-muted-background text-xs px-4 py-2 font-mono border-b border-border rounded-t-lg">
+          {filename}
+        </div>
+      )}
       <button
         onClick={handleCopy}
         className={`absolute top-3 right-3 z-10 bg-black/80 text-white p-1.5 rounded-md hover:bg-black/90 transition ${
@@ -75,38 +81,15 @@ export function CodeBlock({ children, language = "jsx" }) {
           <Copy className="w-4 h-4 cursor-pointer" />
         )}
       </button>
-
-      {formattedCode && (
-        <Highlight theme={theme} code={formattedCode} language={language}>
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <div className="overflow-x-auto rounded-lg w-full">
-              <pre
-                className={`${className} p-4 pl-6 text-xs sm:text-sm`}
-                style={{ ...style, overflowX: "auto" }}
-              >
-                {tokens.map((line, i) => {
-                  const { key, ...lineProps } = getLineProps({ line, key: i });
-                  return (
-                    <div key={key} {...lineProps} className="table-row">
-                      <span className="table-cell pr-4 select-none text-right text-gray-500">
-                        {i + 1}
-                      </span>
-                      <span className="table-cell whitespace-pre-wrap">
-                        {line.map((token, j) => {
-                          const { key, ...tokenProps } = getTokenProps({
-                            token,
-                            key: j,
-                          });
-                          return <span key={key} {...tokenProps} />;
-                        })}
-                      </span>
-                    </div>
-                  );
-                })}
-              </pre>
-            </div>
-          )}
-        </Highlight>
+      {isPending ? (
+        <CodeBlockSkeleton />
+      ) : (
+        formattedCode && (
+          <CodeBlockHighlight
+            formattedCode={formattedCode}
+            language={language}
+          />
+        )
       )}
     </div>
   );

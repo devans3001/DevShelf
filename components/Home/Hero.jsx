@@ -115,7 +115,7 @@ function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/docs">
+          <Link href="/docs/getting-started">
             <Button className="text-base px-8 py-6 group" size="lg">
               <Zap className="mr-2 h-4 w-4 group-hover:animate-pulse" />
               Get Started

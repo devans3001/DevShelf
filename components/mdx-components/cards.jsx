@@ -52,7 +52,7 @@ export function Callout({ children, type = "info", title }) {
           type == "tip" && "text-green-800 dark:text-green-100"
         )}
       >
-        {title && <h1 className="font-bold text-foreground">{title}</h1>}
+        {title && <h2 className="font-bold text-foreground">{title}</h2>}
         {children}
       </div>
     </div>
