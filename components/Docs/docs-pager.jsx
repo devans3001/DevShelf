@@ -21,10 +21,10 @@ export async function DocsPager({ currentSlug }) {
         >
           <span>Previous:</span>
           <div className="flex gap-2 items-center">
-            <ChevronLeft className="w-8 h-8" />
+            <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
             <Tooltip>
               <TooltipTrigger>
-                <span className="text-white text-xl">{prev.title}</span>
+                <span className="text-foreground text-lg md:text-xl">{prev.title}</span>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{prev.description}</p>
@@ -45,13 +45,13 @@ export async function DocsPager({ currentSlug }) {
           <div className="flex gap-2 items-center">
             <Tooltip>
               <TooltipTrigger>
-                <span className="text-white text-xl">{next.title}</span>
+                <span className="text-foreground text-lg md:text-xl">{next.title}</span>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{next.description}</p>
               </TooltipContent>
             </Tooltip>
-            <ChevronRight className="w-8 h-8" />
+            <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
           </div>
         </Link>
       ) : null}

@@ -8,7 +8,21 @@ tags: ['react', 'hooks', 'frontend']
 
 ## Introduction
 
-React Hooks revolutionized functional components by enabling state management and side effects. This guide covers core hooks with detailed explanations, best practices, and interactive examples.
+React Hooks fundamentally transformed how we build modern React applications by empowering functional components with state management, side effects, and lifecycle capabilities. Introduced in React 16.8, hooks provide a more intuitive way to reuse stateful logic compared to class components and higher-order components.
+
+### Why Hooks Matter:
+
+*     Simplified Components: Eliminate the need for class boilerplate (no more this binding)
+
+*     Reusable Logic: Share stateful behavior without component hierarchy changes
+
+*     Improved Organization: Related code lives together (unlike split lifecycle methods)
+
+*     Gradual Adoption: Work alongside existing class components
+
+<ProTip title="Modern React Development"> 
+  The React team now recommends using functional components with hooks for all new development. Over 90% of new React projects leverage hooks as their primary state management solution. 
+</ProTip>
 
 ---
 
@@ -200,11 +214,11 @@ return (
 </CodeBlock>
 
 <CommonMistake title="Premature Optimization">
-  Don't overuse useMemo — the overhead of memoization might outweigh the
+  Don't overuse useMemo the overhead of memoization might outweigh the
   benefits for simple computations. Profile first!
 </CommonMistake>
 
-<Callout type="warning" title="Dependency Warning">
+<Callout type="info" title="Dependency Warning">
   Incorrect dependency arrays can lead to stale values. Consider using the
   ESLint exhaustive-deps rule to catch these issues.
 </Callout>
@@ -355,3 +369,115 @@ function App() {
   Ideal for global state like authentication, theming, or localization
   that needs to be accessed across many parts of the app.
 </Callout>
+
+## React Portals
+
+<ProTip title="What Problem Do Portals Solve?">
+  Portals allow you to render children into a DOM node that exists outside the parent component's hierarchy. 
+  Perfect for modals, tooltips, and notifications that need to "break out" of container CSS.
+</ProTip>
+
+### Basic Usage
+
+<CodeBlock language="jsx" showCopyButton={true}>
+{`import { createPortal } from 'react-dom';
+
+function Modal({ children }) {
+  return createPortal(
+    <div className="modal">
+      {children}
+    </div>,
+    document.getElementById('modal-root')
+  );
+}
+
+function App() {
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <div className="app" style={{ overflow: 'hidden' }}>
+      <button onClick={() => setShowModal(true)}>
+        Open Modal
+      </button>
+      
+      {showModal && (
+        <Modal>
+          <h2>This renders outside the app div!</h2>
+          <button onClick={() => setShowModal(false)}>
+            Close
+          </button>
+        </Modal>
+      )}
+    </div>
+  );
+}`}
+</CodeBlock>
+
+
+### Real-World Example: Modal Dialog
+
+<CodeBlock language="jsx" showCopyButton={true}>
+{`
+function PizzaOrder() {
+  const [showToppings, setShowToppings] = useState(false);
+  
+  return (
+    <div className="pizza-app" style={{ position: 'relative', border: '2px dashed #ccc', padding: 20 }}>
+      <h3>🍕 Pizza Builder</h3>
+      <button onClick={() => setShowToppings(true)}>
+        Choose Toppings
+      </button>
+      
+      {showToppings && (
+        <Modal onClose={() => setShowToppings(false)}>
+          <h2>Add Toppings</h2>
+          <ul>
+            {['Mushrooms', 'Pepperoni', 'Olives'].map(topping => (
+              <li key={topping}>
+                <label>
+                  <input type="checkbox" />
+                  {topping}
+                </label>
+              </li>
+            ))}
+          </ul>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+function Modal({ children, onClose }) {
+  return createPortal(
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      display: 'grid',
+      placeItems: 'center',
+      zIndex: 1000
+    }}>
+      <div style={{
+        background: 'white',
+        padding: '2rem',
+        borderRadius: '8px'
+      }}>
+        {children}
+        <button 
+          onClick={onClose}
+          style={{ marginTop: '1rem' }}
+        >
+          Done
+        </button>
+      </div>
+    </div>,
+    document.getElementById('modal-root')
+  );
+}
+`}
+</CodeBlock>
+
+<CommonMistake title="Watch Out!"> Always check if the DOM node exists before creating a portal. In Next.js, use useEffect to ensure the node is available on the client side. </CommonMistake>

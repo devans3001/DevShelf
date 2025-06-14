@@ -3,6 +3,7 @@ import { getDocBySlug, useMdxDocs } from "@/lib/mdx";
 import { CustomComponents } from "@/components/mdx-components/mdx-components";
 import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
+import { Breadcrumbs } from "@/components/Docs/docs-breadcrumb";
 
 export async function generateMetadata({params}) {
 const { category, slug } = await params;
@@ -44,6 +45,7 @@ export default async function DocPage({ params }) {
     <>
       <div className="flex gap-8 ">
         <div className="prose-vercel dark:prose-invert flex-1 ">
+        <Breadcrumbs/>
           <MDXRemote source={doc?.source} components={CustomComponents} />
           <ClientWrapper headings={headings} />
         </div>

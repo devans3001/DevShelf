@@ -12,7 +12,9 @@ const socialLinks = [
 
 export default function SocialFooter() {
   return (
-    <SheetFooter className="relative w-full h-[10%] sm:h-[15%]">
+    <SheetFooter className="relative w-full h-[10%] sm:h-[15%] flex justify-around">
+      <div>
+
       <ul className="flex justify-around">
         {socialLinks.map((link, index) => {
           const Icon = link.icon;
@@ -22,13 +24,13 @@ export default function SocialFooter() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative block p-2 bg-foreground text-center rounded-full overflow-hidden border-4  z-10 group"
+                className="relative block p-1.5 bg-foreground text-center rounded-full overflow-hidden border-4  z-10 group"
               >
                 <span
                   className="relative z-20 flex items-center justify-center h-full transition-transform duration-500 group-hover:rotate-[360deg]"
                 >
                   <Icon
-                    className="w-8 h-8 stroke-background group-hover:stroke-white transition-colors text-background duration-500"
+                    className="w-6 h-6 stroke-background group-hover:stroke-white transition-colors text-background duration-500"
                   />
                 </span>
                 <span
@@ -39,6 +41,8 @@ export default function SocialFooter() {
           );
         })}
       </ul>
+      </div>
+
     </SheetFooter>
   );
 }

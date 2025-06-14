@@ -11,7 +11,7 @@ export default function DevShelf() {
 
     const tl = gsap.timeline({
       repeat: -1,
-      defaults: { duration: 1, ease: "power1.inOut" },
+      defaults: { duration: 3, ease: "power1.inOut" },
     });
 
     tl.set(svgRef.current, { opacity: 1 })
@@ -38,8 +38,8 @@ export default function DevShelf() {
             y2="100"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0.2" stopColor="#7E22CE" />
-            <stop offset="0.8" stopColor="#7E22CE" />
+            <stop offset="0.2" stopColor="rgb(255,135,9)" />
+            <stop offset="0.8" stopColor="rgb(247,189,248)" />
           </linearGradient>
         </defs>
 

@@ -91,7 +91,7 @@ function Hero() {
         className="relative max-w-4xl mx-auto text-center z-10"
       >
         {/* 🧠 THIS IS WHERE YOU ADD IT */}
-        <div className="flex justify-center items-center bg-red-500">
+        <div className="flex justify-center items-center">
           <DevShelf />
         </div>
         <motion.div
