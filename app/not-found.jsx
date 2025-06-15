@@ -22,7 +22,7 @@ export default function NotFound() {
       >
         <div className="relative mb-8">
           <Ghost className="w-24 h-24 text-primary mx-auto" />
-          <Terminal className="absolute -right-4 -bottom-4 w-10 h-10 text-yellow-500 bg-background rounded-md p-1 border" />
+          <Terminal className="absolute -right-4 -bottom-4 w-10 h-10 text-purple-600 bg-background rounded-md p-1 border" />
         </div>
 
         <h1 className="text-3xl md:text-4xl font-bold mb-3">
