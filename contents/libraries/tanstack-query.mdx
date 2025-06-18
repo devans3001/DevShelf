@@ -1,0 +1,222 @@
+---
+title: TanStack Query for Next.js
+description: Master data fetching in Next.js with TanStack Query
+category: Data Fetching
+level: intermediate
+order: 5
+tags: ["react", "tanstack-query", "nextjs"]
+---
+
+# TanStack Query for Next.js Applications
+
+<ProTip title="Why TanStack Query?">
+  TanStack Query (formerly React Query) handles server state management,
+  caching, and synchronization with zero-config. Perfect for Next.js apps
+  needing efficient data fetching.
+</ProTip>
+
+## Why Use TanStack Query?
+
+- Automatic caching and background updates
+- Deduped requests to avoid duplicate API calls
+- Powerful pagination and infinite scroll support
+- Optimistic updates for better UX
+- Built-in loading and error states
+
+## Installation
+
+<CodeBlock language="markdown">{`npm install @tanstack/react-query`}</CodeBlock>
+
+### Optional: DevTools
+
+<CodeBlock language="markdown">
+  {`npm install @tanstack/react-query-devtools`}
+</CodeBlock>
+
+## Basic Setup
+
+<CodeBlock language="jsx">
+{`// app/providers.js
+'use client';
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+export function Providers({ children }) {
+  const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,       // ✅ Keep data fresh for 1 min
+      cacheTime: 5 * 60 * 1000,   // 🗃 Keep unused data in memory for 5 mins
+      retry: 3,                   // 🔁 Retry failed queries up to 3 times
+      refetchOnWindowFocus: false, // 🪟 Don't refetch when window gains focus
+      refetchOnMount: false,      // ⛰ Don't refetch on mount (if cached)
+      refetchInterval: false,     // ⏱ No polling by default
+      suspense: false,            // 🧘 Disable React suspense
+      useErrorBoundary: false,    // 🧱 Don't throw errors to error boundary
+    }
+  }
+});
+
+return (
+
+<QueryClientProvider client={queryClient}>
+  {children}
+  <ReactQueryDevtools initialIsOpen={false} />
+</QueryClientProvider>
+); }`}
+
+</CodeBlock>
+
+Wrap your app in layout.js:
+
+<CodeBlock language="jsx">
+{`// app/layout.js
+import { Providers } from './providers';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}`}
+</CodeBlock>
+
+### Data Fetching Examples
+
+1. Create a Custom Hook
+<CodeBlock language="jsx">
+{`// hooks/useUser.js
+import { useQuery } from "@tanstack/react-query";
+
+function fetchUser(id) {
+return fetch(\`/api/user/\${id}\`).then(res => res.json());
+}
+
+export function useUser(id) {
+  const { isPending, data, error, isError } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => fetchUser(id),
+    staleTime: 60 * 1000,
+    enabled: !!id,
+  });
+
+return { data, isPending, error, isError }
+}
+`}
+</CodeBlock>
+
+Use the Hook in Your Component
+
+<CodeBlock language="jsx">
+{`"use client";
+import { useUser } from "@/hooks/useUser";
+
+export default function Profile({ id }) {
+  const { data, isPending, error } = useUser(id);
+
+if (isPending) return <p>Loading...</p>;
+if (error) return <p>Error loading user.</p>;
+
+return <h1>Hello {data.name}</h1>;
+}
+`}
+
+</CodeBlock>
+
+### Data Mutating Examples
+Setup Your Mutation Hook
+<CodeBlock language="jsx">
+{`// hooks/useCreateUser.js
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+async function createUser(user) {
+  const res = await fetch("/api/users", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  });
+
+  if (!res.ok) throw new Error("Failed to create user");
+
+  return res.json();
+}
+
+export function useCreateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      // ✅ Invalidate and refetch user list or cache updates
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+}`}
+</CodeBlock>
+
+ Use the Mutation in a Component
+
+ <CodeBlock language="jsx">
+{`"use client";
+
+import { useState } from "react";
+import { useCreateUser } from "@/hooks/useCreateUser";
+
+export default function UserForm() {
+  const [name, setName] = useState("");
+  const { mutate, isPending, isSuccess, isError, error } = useCreateUser();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    mutate({ name }); // 🚀 trigger the mutation
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Enter name"
+        className="border p-2 rounded w-full"
+      />
+      <button type="submit" disabled={isPending} className="btn btn-primary">
+        {isPending ? "Creating..." : "Create User"}
+      </button>
+
+      {isSuccess && <p className="text-green-600">User created!</p>}
+      {isError && <p className="text-red-600">{error.message}</p>}
+    </form>
+  );
+}
+`}
+</CodeBlock>
+
+## Best Practices
+
+1. **Query Keys**:
+
+   - Use descriptive keys like `['posts', 'list', { filter: 'active' }]`
+   - Keep them unique for each query
+
+2. **Error Handling**:
+
+   - Always handle errors in your UI
+   - Consider retry logic for important queries
+
+3. **Performance**:
+   - Use `staleTime` to control refetching
+   - Enable `refetchOnWindowFocus` for critical data
+
+<Callout type="warning">
+  Avoid over-fetching by properly structuring your API endpoints and using
+  selectors to transform data.
+</Callout>
+## Additional Resources
+
+- [TanStack Query Documentation](https://tanstack.com/query/latest)
+- [Next.js Data Fetching Guide](https://nextjs.org/docs/basic-features/data-fetching)
+- [React Query DevTools Guide](https://tanstack.com/query/latest/docs/react/devtools)

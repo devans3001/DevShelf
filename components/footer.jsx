@@ -2,7 +2,6 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
   Moon,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useThemeDetector } from "@/hooks/useThemeDetector";
+import ExternalLink from "./ExternalLink";
 
 export function Footer() {
   const { mounted,theme, setTheme } = useThemeDetector()
@@ -52,7 +52,6 @@ export function Footer() {
   return (
     <footer className="bg-background border-t mt-16 bottom-sentinel">
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 py-12 px-4">
-        {/* Column 1: Product */}
         <div>
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Code2 className="h-5 w-5 text-primary" />
@@ -85,7 +84,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Column 2: Resources */}
         <div>
           <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">
             Resources
@@ -105,7 +103,6 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Column 3: Community */}
         <div>
           <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">
             Community
@@ -113,31 +110,24 @@ export function Footer() {
           <ul className="space-y-3">
             {community.map((item) => (
               <li key={item.name}>
-                <Link
+                <ExternalLink
                   href={item.href}
-                  target="_blank"
                   className="text-sm flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
                 >
                   <item.icon className="h-4 w-4" />
                   {item.name}
-                </Link>
+                </ExternalLink>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Column 4: Support */}
         <div>
           <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">
             Support
           </h4>
           <div className="space-y-4">
-            {/* <Button asChild className="w-full">
-              <Link href="/sponsor" className="flex items-center gap-2">
-                <Zap className="h-4 w-4" />
-                Sponsor Project
-              </Link>
-            </Button> */}
+       
               <a href="https://www.buymeacoffee.com/devans3001e" target="_blank">
               
                 <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=devans3001e&button_colour=BD5FFF&font_colour=ffffff&font_family=Comic&outline_colour=000000&coffee_colour=FFDD00" />
@@ -146,7 +136,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="w-full py-6 px-3">
         <Separator className="mb-6" />
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">

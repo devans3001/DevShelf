@@ -10,6 +10,7 @@ import {
   Moon,
   Copy,
   RefreshCw,
+  Zap, Cpu, AlertTriangle
 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import { Button } from "../ui/button";
@@ -36,20 +37,9 @@ export const CustomComponents = {
   p: (props) => <p className="my-4" {...props} />,
   ul: (props) => <ul className="my-4 list-outside list-disc" {...props} />,
   hr: (props) => <hr {...props} />,
-  a: (props) =>  <Link
-      href={props?.href || "#"}
-      target="_blank"
-      className={` text-blue-600 hover:underline `}
-      {...props}
-    >
-      <span className="inline-flex gap-1">
-        {props.children}
-        <TiLocationArrow className="" />
-      </span>
-    </Link>,
-  // a: (props) => (
-  // <ExternalLink className={`text-blue-600 hover:underline`} {...props}/>
-  // ),
+  a: (props) => (
+  <ExternalLink {...props}/>
+  ),
   img: (props) => (
     <Image
       src={props.src || "/placeholder.svg"}
@@ -83,4 +73,5 @@ export const CustomComponents = {
   Moon,
   Copy,
   RefreshCw,
+  Zap, Cpu, AlertTriangle
 };

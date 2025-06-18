@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useTransition } from "react";
 import prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
+import parserMarkdown from "prettier/plugins/markdown";
 import pluginEstree from "prettier/plugins/estree";
 import { Check, Copy } from "lucide-react";
 import { toast } from "sonner";
@@ -10,7 +11,7 @@ import { useView } from "@/hooks/useView";
 import CodeBlockHighlight from "./code-block-highlight";
 import CodeBlockSkeleton from "./code-block-skeleton";
 
-export function CodeBlock({ children, language = "jsx", filename = "app.js" }) {
+export function CodeBlock({ children, language = "jsx" }) {
   const [copied, setCopied] = useState(false);
   const [formattedCode, setFormattedCode] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -20,10 +21,29 @@ export function CodeBlock({ children, language = "jsx", filename = "app.js" }) {
     async function formatCode() {
       try {
         startTransition(async () => {
+          let parser = "babel";
+          let plugins = [pluginEstree, parserBabel];
+
+          switch (language) {
+            case "markdown":
+            case "md":
+              parser = "markdown";
+              plugins = [pluginEstree, parserMarkdown];
+              break;
+            case "ts":
+            case "tsx":
+            case "typescript":
+              parser = "babel-ts";
+              plugins = [pluginEstree, parserTS];
+              break;
+            default:
+              parser = "babel";
+              plugins = [pluginEstree, parserBabel];
+          }
           const result = await prettier.format(children.trim(), {
             proseWrap: "always",
-            parser: "babel",
-            plugins: [parserBabel, pluginEstree],
+            parser,
+            plugins,
             semi: true,
             singleQuote: false,
             printWidth: !md ? 60 : 80,
@@ -46,7 +66,6 @@ export function CodeBlock({ children, language = "jsx", filename = "app.js" }) {
       toast.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      // Fallback for browsers that don't support clipboard API
       const textArea = document.createElement("textarea");
       textArea.value = children.trim();
       document.body.appendChild(textArea);
@@ -63,11 +82,11 @@ export function CodeBlock({ children, language = "jsx", filename = "app.js" }) {
 
   return (
     <div className="relative my-6 w-full max-w-full overflow-hidden group">
-      {filename && !isPending && (
+      {/* {filename && !isPending && (
         <div className="bg-muted text-muted-background text-xs px-4 py-2 font-mono border-b border-border rounded-t-lg">
           {filename}
         </div>
-      )}
+      )} */}
       <button
         onClick={handleCopy}
         className={`absolute top-3 right-3 z-10 bg-black/80 text-white p-1.5 rounded-md hover:bg-black/90 transition ${

@@ -40,6 +40,7 @@ export const sections = [
         icon: <Library size={16} />,
         subItems: [
           { name: "React Hooks", href: "/docs/libraries/react-hooks" },
+          { name: "Tanstack Query", href: "/docs/libraries/tanstack-query" },
         ],
       },
       {

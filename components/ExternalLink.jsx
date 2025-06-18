@@ -1,18 +1,22 @@
 import { TiLocationArrow } from "react-icons/ti";
 import React from "react";
 import Link from "next/link";
+import { cn } from "@/lib/utils"; 
 
-function ExternalLink({ props, children,className }) {
+function ExternalLink({ children, className, href, ...props }) {
   return (
     <Link
-      href={props?.href || "#"}
+      href={href || "#"}
       target="_blank"
-      className={`text-blue-600 hover:underline`}
+      className={cn(
+        !className && "text-blue-600 hover:underline", 
+        className
+      )}
       {...props}
     >
-      <span className="flex gap-1">
+      <span className="inline-flex gap-1">
         {children}
-        <TiLocationArrow className="" />
+        {href?.startsWith("http") && <TiLocationArrow className="" />}
       </span>
     </Link>
   );

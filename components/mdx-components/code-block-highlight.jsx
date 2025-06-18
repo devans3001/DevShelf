@@ -11,7 +11,7 @@ function CodeBlockHighlight({formattedCode,language}) {
   return (
      <Highlight theme={theme} code={formattedCode} language={language}>
             {({ className, style, tokens, getLineProps, getTokenProps }) => (
-              <div className="overflow-x-auto rounded-b-lg w-full">
+              <div className="overflow-x-auto rounded-lg w-full">
                 <pre
                   className={`${className} p-4 pl-6 text-xs sm:text-sm`}
                   style={{ ...style, overflowX: "auto" }}

@@ -16,6 +16,11 @@ const nextConfig = {
         hostname: 'images.pexels.com',
        
       },
+      {
+        protocol: 'https',
+        hostname: 'iad.microlink.io',
+       
+      },
     ],
   },
   transpilePackages: ["three", "framer-motion-3d", "framer-motion"],

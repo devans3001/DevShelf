@@ -8,6 +8,7 @@ import { Navbar } from "@/components/Nav/NavBar";
 import { NavbarHeightProvider } from "@/hooks/NavbarHeightContext";
 import HeaderProvider from "@/hooks/HeadersContexr";
 import { Footer } from "@/components/footer";
+import { Providers } from "./Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,12 +35,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
+        <Providers>
+
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
+          >
           <NavbarHeightProvider>
             <Navbar />
             <HeaderProvider>{children}</HeaderProvider>
@@ -48,6 +51,7 @@ export default function RootLayout({ children }) {
 
           <Footer />
         </ThemeProvider>
+          </Providers>
       </body>
     </html>
   );
