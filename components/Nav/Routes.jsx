@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import { Button } from "../ui/button";
 import { MoveUpRight } from "lucide-react";
+import { TiLocationArrow } from "react-icons/ti";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -34,11 +35,11 @@ function Routes({ view }) {
                 className={`text-sm relative transition-all cursor-pointer text-muted-foreground hover:text-foreground `}
               >
                 {ele.name}
-              </Button>
-              <MoveUpRight
-                size={5}
+              <TiLocationArrow
+                // size={5}
                 className="absolute right-0 top-0 w-3 h-3 text-muted-foreground"
               />
+              </Button>
             </a>
           );
         }

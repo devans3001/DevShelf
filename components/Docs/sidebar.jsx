@@ -10,7 +10,7 @@ function Sidebar() {
 
   return (
     <aside
-      className="fixed left-0 w-64 overflow-y-auto"
+      className="sticky left-0  w-64 overflow-y-auto"
       style={{
         top: `${navbarHeight}px`,
         height: `calc(100dvh - ${navbarHeight}px)`,

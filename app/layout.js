@@ -7,6 +7,7 @@ import ThemeProvider from "@/hooks/ThemeProvider";
 import { Navbar } from "@/components/Nav/NavBar";
 import { NavbarHeightProvider } from "@/hooks/NavbarHeightContext";
 import HeaderProvider from "@/hooks/HeadersContexr";
+import { Footer } from "@/components/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,8 +46,7 @@ export default function RootLayout({ children }) {
           </NavbarHeightProvider>
           <Toaster />
 
-          {/* Implement actual search functionality with your MDX content?  */}
-          {/* <FOOTER/>   */}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

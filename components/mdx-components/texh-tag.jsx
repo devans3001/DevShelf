@@ -1,3 +1,5 @@
+import { TiLocationArrow } from "react-icons/ti";
+
 const techItems = [
   {
     name: "HTML",
@@ -50,9 +52,10 @@ function Tag({ name, href, color }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${baseClasses} ${colorClasses[color]}`}
+      className={`${baseClasses} ${colorClasses[color]} relative`}
     >
       {name}
+      <TiLocationArrow className="absolute top-0 right-0"/>
     </a>
   );
 }

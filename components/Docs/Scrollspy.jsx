@@ -9,7 +9,7 @@ function ScrollspyPage() {
 
   return (
     <aside
-      className="fixed right-0 w-80 p-6 overflow-y-auto"
+      className="sticky right-0 w-80 p-6 overflow-y-auto"
       style={{
         top: `${navbarHeight}px`,
         height: `calc(100dvh - ${navbarHeight}px)`,

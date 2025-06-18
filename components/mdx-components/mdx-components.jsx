@@ -19,6 +19,8 @@ import { CommonMistake, ProTip } from "./boxs";
 import { Callout, Card, CardGrid } from "./cards";
 import TechTag from "./texh-tag";
 import { H2, Heading } from "./Headers";
+import ExternalLink from "../ExternalLink";
+import { TiLocationArrow } from "react-icons/ti";
 
 
 
@@ -34,14 +36,20 @@ export const CustomComponents = {
   p: (props) => <p className="my-4" {...props} />,
   ul: (props) => <ul className="my-4 list-outside list-disc" {...props} />,
   hr: (props) => <hr {...props} />,
-  a: (props) => (
-    <Link
-      href={props.href || "#"}
+  a: (props) =>  <Link
+      href={props?.href || "#"}
       target="_blank"
-      className="text-blue-600 hover:underline"
+      className={` text-blue-600 hover:underline `}
       {...props}
-    />
-  ),
+    >
+      <span className="inline-flex gap-1">
+        {props.children}
+        <TiLocationArrow className="" />
+      </span>
+    </Link>,
+  // a: (props) => (
+  // <ExternalLink className={`text-blue-600 hover:underline`} {...props}/>
+  // ),
   img: (props) => (
     <Image
       src={props.src || "/placeholder.svg"}
