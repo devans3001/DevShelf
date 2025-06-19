@@ -1,18 +1,20 @@
+import React from "react";
 
+async function Page() {
+  const arr = [
+    "love-hate-no-man-to-con",
+    "love-hate-no-man",
+    "love-hate-no-man-to",
+  ];
 
+  const val = arr.filter((ele) => {
+    const x = ele.split("-").length;
 
-import React from 'react'
-import PoweredByChip from './Test'
-import BlobHero from '@/components/GsapTest'
-import RocketAnimation from '@/components/RocketGsap'
+    return x < 5;
+  });
 
-function Page() {
-  return (
-    <div>
-      <BlobHero/>
-      <RocketAnimation/>
-    </div>
-  )
+  console.log(val);
+  return <div></div>;
 }
 
-export default Page
+export default Page;
