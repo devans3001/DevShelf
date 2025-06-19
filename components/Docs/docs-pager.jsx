@@ -12,6 +12,8 @@ export async function DocsPager({ currentSlug }) {
 
   if (!prev && !next) return null;
 
+  // console.log('docs',docs)
+
   return (
     <div className="flex justify-between mt-16 pt-8 border-t">
       {prev ? (

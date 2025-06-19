@@ -12,7 +12,7 @@ import Link from "next/link";
  export const routes = [
     { name: "Explore Docs", path: "/docs" },
     { name: "Blog", path: "/blog" },
-    { name: "Showcase", path: "https://www.w3schools.com/" },
+    { name: "Showcase", path: "https://devans-front.vercel.app/" },
   ];
 
 function Routes({ view }) {
