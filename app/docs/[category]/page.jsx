@@ -4,9 +4,10 @@ import { getDocsParams } from "@/lib/mdx-all";
 import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
 import { Breadcrumbs } from "@/components/Docs/docs-breadcrumb";
+import { notFound } from "next/navigation";
 
-export async function generateMetadata({params}) {
-const { category } = await params;
+export async function generateMetadata({ params }) {
+  const { category } = await params;
 
   const { frontmatter } = await getDocsParams(category);
 
@@ -26,28 +27,23 @@ const { category } = await params;
   };
 }
 
-
-
 export default async function DocsIndexPage({ params }) {
   const { category } = await params;
 
-  const {  headings,content } = await getDocsParams(category);
+  const docs = await getDocsParams(category);
 
-  const id = category || "/"
-
-  // console.log("content",content)
-  // console.log("params",params)
+  const id = category || "/";
 
   return (
     <>
-    <div className="flex gap-8">
-      <div className="prose dark:prose-invert flex-1">
-         <Breadcrumbs/>
-        <MDXRemote source={content} components={CustomComponents} />
-        <ClientWrapper headings={headings} />
+      <div className="flex gap-8">
+        <div className="prose dark:prose-invert flex-1">
+          <Breadcrumbs />
+          <MDXRemote source={docs.content} components={CustomComponents} />
+          <ClientWrapper headings={docs.headings} />
+        </div>
       </div>
-    </div>
-    <DocsPager currentSlug={`docs/${id}`}/>
+      <DocsPager currentSlug={`docs/${id}`} />
     </>
   );
 }

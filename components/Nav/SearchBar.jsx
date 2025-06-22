@@ -1,7 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, Code, FileText, Settings, Github, Package, Zap } from "lucide-react";
+import { useState, useEffect, useMemo, useTransition } from "react";
+import {
+  Search,
+  Code,
+  FileText,
+  Settings,
+  Github,
+  Package,
+  Zap,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   CommandDialog,
@@ -14,24 +22,90 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import { SearchTrigger } from "./SearchIcon";
+import Fuse from "fuse.js";
 
-// Mock search data - replace with your actual content
+// ADD USETRANSITION FOR THE ALLMDX DOCS
 const docsSections = [
-  { id: "snippets", name: "Code Snippets", icon: <Code className="w-4 h-4" /> },
-  { id: "boilerplates", name: "Boilerplates", icon: <FileText className="w-4 h-4" /> },
-  { id: "vscode", name: "VS Code Extensions", icon: <Zap className="w-4 h-4" /> },
-  { id: "packages", name: "NPM Packages", icon: <Package className="w-4 h-4" /> },
+  {
+    id: "snippets",
+    title: "Code Snippets",
+    icon: <Code className="w-4 h-4" />,
+  },
+  {
+    id: "boilerplates",
+    title: "Boilerplates",
+    icon: <FileText className="w-4 h-4" />,
+  },
+  {
+    id: "vscode",
+    title: "VS Code Extensions",
+    icon: <Zap className="w-4 h-4" />,
+  },
+  {
+    id: "packages",
+    title: "NPM Packages",
+    icon: <Package className="w-4 h-4" />,
+  },
 ];
 
 const quickActions = [
-  { id: "settings", name: "Settings", icon: <Settings className="w-4 h-4" />, shortcut: "⌘S" },
-  { id: "github", name: "GitHub Repo", icon: <Github className="w-4 h-4" />, shortcut: "⌘G" },
+  {
+    id: "settings",
+    name: "Settings",
+    icon: <Settings className="w-4 h-4" />,
+    shortcut: "⌘S",
+  },
+  {
+    id: "github",
+    name: "GitHub Repo",
+    icon: <Github className="w-4 h-4" />,
+    shortcut: "⌘G",
+  },
 ];
 
 export default function SearchBar() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [docs, setDocs] = useState([]);
+  const [isLoading, startTransition] = useTransition(null);
+  const [results, setResults] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    startTransition(async () => {
+      fetch("/api/search/mdx")
+        .then((res) => res.json())
+        .then(setDocs);
+    });
+  }, []);
+
+  // Initialize Fuse only once when docs load
+  const fuse = useMemo(() => {
+    return new Fuse(docs, {
+      keys: [
+        { name: "title", weight: 0.5 },
+        { name: "keywords", weight: 2 },
+        { name: "slug", weight: 1 },
+        { name: "content", weight: 3 },
+        { name: "headings.text", weight: 0.5 },
+      ],
+      includeScore: true,
+      threshold: 0.6,
+      minMatchCharLength: 2,
+      ignoreLocation: true,
+    });
+  }, [docs]); // Recreate only when docs change
+
+  useEffect(() => {
+    if (query.trim() === "") {
+      setResults([...docsSections]);
+    } else {
+      // const searchResults = fuse.search(query);
+      const searchResults = fuse.search(query).map(({ item }) => item);
+      setResults(searchResults);
+    }
+  }, [query]);
+  console.log(" result", results);
 
   // Toggle with CMD+K
   useEffect(() => {
@@ -45,13 +119,13 @@ export default function SearchBar() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const filteredDocs = docsSections.filter((item) =>
-    item.name.toLowerCase().includes(query.toLowerCase())
-  );
+  if (isLoading) return <p>loading</p>;
 
   const handleSelect = (id) => {
     setOpen(false);
-    router.push(`/docs/${id}`);
+    const selected = docs.find((doc) => doc.slug === id);
+    console.log("selectd", selected);
+    if (selected) router.push(`/${selected.slug}`);
   };
 
   return (
@@ -59,29 +133,34 @@ export default function SearchBar() {
       <SearchTrigger onClick={() => setOpen(true)} />
 
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput 
-          placeholder="Search documentation, snippets, or packages..." 
+        <CommandInput
+          placeholder="Search documentation, snippets, or packages..."
           value={query}
           onValueChange={setQuery}
         />
         <CommandList className="max-h-[70vh]">
-          <CommandEmpty>No results found. Try a different search term.</CommandEmpty>
+          <CommandEmpty>
+            No results found. Try a different search term.
+          </CommandEmpty>
 
-          {filteredDocs.length > 0 && (
-            <CommandGroup heading="Documentation">
-              {filteredDocs.map((item) => (
-                <CommandItem 
-                  key={item.id}
-                  value={item.id}
-                  onSelect={() => handleSelect(item.id)}
+        {!isLoading &&  <CommandGroup heading="Documentation">
+              {results?.map((item) => (
+                <CommandItem
+                  key={item.slug}
+                  value={item.slug}
+                  onSelect={() => handleSelect(item.slug)}
                 >
-                  <div className="mr-2">{item.icon}</div>
-                  <span>{item.name}</span>
+                  <div className="mr-2">
+                    {" "}
+                    {item.icon || <FileText className="w-4 h-4" />}
+                  </div>
+                  <span>{item.title}</span>
                 </CommandItem>
               ))}
-            </CommandGroup>
-          )}
+           
+            </CommandGroup>}
 
+      
           <CommandSeparator />
 
           <CommandGroup heading="Quick Actions">
@@ -96,6 +175,7 @@ export default function SearchBar() {
             ))}
           </CommandGroup>
         </CommandList>
+    
 
         {/* Footer */}
         <div className="p-2 text-xs text-muted-foreground border-t flex items-center justify-between">

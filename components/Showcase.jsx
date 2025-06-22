@@ -70,7 +70,7 @@ export function ProjectShowcase() {
     );
   }
 
-  console.log(activeProjects)
+  // console.log(activeProjects)
 
   return (
     <section className="bg-background p-6">

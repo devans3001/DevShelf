@@ -1,0 +1,89 @@
+---
+title: "Tailwind CSS Essentials"
+description: "A practical guide to using Tailwind CSS in modern web projects"
+order: 6
+---
+
+# Tailwind CSS Mastery
+
+<Callout type="info" icon={<Paintbrush size={18} />}>
+  Tailwind CSS is a utility-first CSS framework that enables rapid UI
+  development without leaving your HTML. [Official
+  Documentation](https://tailwindcss.com/docs)
+</Callout>
+
+## Core Concepts
+
+### Utility-First Philosophy
+
+Instead of writing custom CSS, you compose styles using predefined utility classes:
+
+<CodeBlock language="md">
+  {`<div class="bg-white rounded-lg shadow-md p-6 max-w-md mx-auto">
+  <h2 class="text-xl font-bold text-gray-800 mb-2">Card Title</h2>
+  <p class="text-gray-600">Card content goes here...</p>
+</div>`}
+</CodeBlock>
+
+### Responsive Design
+
+Prefix utilities with breakpoint names to apply them conditionally:
+
+<CodeBlock language="md">
+{`<!-- Small screens: full width, Large screens: 50% width -->
+<div class="w-full lg:w-1/2"></div>`}
+</CodeBlock>
+
+### Hover, Focus, and Other States
+
+Use state variants with prefix modifiers:
+
+<CodeBlock language="html">
+  {`<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Click Me
+</button>`}
+</CodeBlock>
+
+## Installation Guide (Next.js Recommended)
+
+### Install Tailwind
+
+<CodeBlock language="md">
+  {`npm install tailwindcss @tailwindcss/postcss postcss`}
+</CodeBlock>
+
+### Configure PostCSS Plugins
+
+Create a postcss.config.mjs file in the root of your project and add the @tailwindcss/postcss plugin to your PostCSS configuration.
+
+<CodeBlock language="javascript">
+  {`
+  //postcss.config.mjs
+  const config = { plugins: { "@tailwindcss/postcss": {} } };
+export default config;
+`}
+</CodeBlock>
+### Import Tailwind CSS
+
+Add an @import to ./src/app/globals.css that imports Tailwind CSS.
+
+<CodeBlock language="md">
+  {`
+ @import "tailwindcss";
+`}
+</CodeBlock>
+
+<ProTip>
+  Pro Tip: Use VS Code with the [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) extension for
+  autocomplete.
+</ProTip>
+
+## Resources
+
+[Official Documentation](https://tailwindcss.com/docs)
+
+[Tailwind UI Components](https://tailwindcss.com/plus)
+
+[Tailwind Cheat Sheet](https://nerdcave.com/tailwind-cheat-sheet)
+
+[Tailwind Playground](https://play.tailwindcss.com/)

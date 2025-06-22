@@ -10,7 +10,8 @@ import {
   Moon,
   Copy,
   RefreshCw,
-  Zap, Cpu, AlertTriangle
+  Zap, Cpu, AlertTriangle,
+  Paintbrush, GitBranch
 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import { Button } from "../ui/button";
@@ -73,5 +74,5 @@ export const CustomComponents = {
   Moon,
   Copy,
   RefreshCw,
-  Zap, Cpu, AlertTriangle
+  Zap, Cpu, AlertTriangle,Paintbrush, GitBranch
 };
