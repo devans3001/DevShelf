@@ -1,5 +1,7 @@
 "use client";
 
+
+//found out that what might have cause the issue was using useTransition in this component
 import { useState, useEffect, useMemo, useTransition } from "react";
 import {
   Search,
@@ -24,7 +26,8 @@ import {
 import { SearchTrigger } from "./SearchIcon";
 import Fuse from "fuse.js";
 
-// ADD USETRANSITION FOR THE ALLMDX DOCS
+// ADD USETRANSITION FOR THE ALLMDX DOCS ..... this info is so wrong, the cause of my annoying error
+// dont use useTransition inside a useEffect
 const docsSections = [
   {
     id: "snippets",
@@ -67,16 +70,16 @@ export default function SearchBar() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [docs, setDocs] = useState([]);
-  const [isLoading, startTransition] = useTransition(null);
+  // const [isLoading, startTransition] = useTransition(null);
   const [results, setResults] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
-    startTransition(async () => {
+    // startTransition(async () => {
       fetch("/api/search/mdx")
         .then((res) => res.json())
         .then(setDocs);
-    });
+    // });
   }, []);
 
   // Initialize Fuse only once when docs load
@@ -119,7 +122,7 @@ export default function SearchBar() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  if (isLoading) return <p>loading</p>;
+  // if (isLoading) return <p>loading</p>;
 
   const handleSelect = (id) => {
     setOpen(false);
@@ -143,7 +146,7 @@ export default function SearchBar() {
             No results found. Try a different search term.
           </CommandEmpty>
 
-        {!isLoading &&  <CommandGroup heading="Documentation">
+        {  <CommandGroup heading="Documentation">
               {results?.map((item) => (
                 <CommandItem
                   key={item.slug}

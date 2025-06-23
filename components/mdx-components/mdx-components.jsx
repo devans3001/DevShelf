@@ -17,12 +17,12 @@ import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import { Button } from "../ui/button";
 import { CodeBlock } from "./code-block";
 
-import { CommonMistake, ProTip } from "./boxs";
+import { CommonMistake, FileStructure, ProTip } from "./boxs";
 import { Callout, Card, CardGrid } from "./cards";
 import TechTag from "./texh-tag";
 import { H2, Heading } from "./Headers";
 import ExternalLink from "../ExternalLink";
-import { TiLocationArrow } from "react-icons/ti";
+import NextjsTable from "./NextjsTable";
 
 
 
@@ -67,6 +67,8 @@ export const CustomComponents = {
   Card: Card,
   TechTag: TechTag,
   CardGrid: CardGrid,
+  FileStructure,
+  NextjsTable,
   Library,
   Code2,
   Box: Box,

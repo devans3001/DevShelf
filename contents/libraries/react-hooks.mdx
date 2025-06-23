@@ -32,9 +32,9 @@ React Hooks fundamentally transformed how we build modern React applications by 
 
 *     Gradual Adoption: Work alongside existing class components
 
-<ProTip title="Modern React Development"> 
+<Callout type="info" title="Modern React Development"> 
   The React team now recommends using functional components with hooks for all new development. Over 90% of new React projects leverage hooks as their primary state management solution. 
-</ProTip>
+</Callout>
 
 ---
 
@@ -42,7 +42,7 @@ React Hooks fundamentally transformed how we build modern React applications by 
 
 <ProTip title="Pro Tip">
   Hooks let you use state and other React features without writing classes.
-  useState is the most fundamental hook for managing local component state.
+  [`useState`](https://react.dev/reference/react/useState) is the most fundamental hook for managing local component state.
 </ProTip>
 
 <CodeBlock language="jsx" showCopyButton={true}>
@@ -83,7 +83,7 @@ return (
 ## useEffect
 
 <ProTip title="Advanced Usage">
-  useEffect combines componentDidMount, componentDidUpdate, and
+  [`useEffect`](https://react.dev/reference/react/useEffect) combines componentDidMount, componentDidUpdate, and
   componentWillUnmount. It's ideal for data fetching, subscriptions, and manual
   DOM manipulations.
 </ProTip>
@@ -152,7 +152,7 @@ return (
 ## useRef
 
 <ProTip title="Beyond DOM References">
-  While commonly used for DOM access, useRef is also perfect for storing any
+  While commonly used for DOM access, [`useRef`](https://react.dev/reference/react/useRef) is also perfect for storing any
   mutable value that should persist between renders without causing re-renders.
 </ProTip>
 
@@ -199,7 +199,7 @@ return (
 ## useMemo
 
 <ProTip title="Optimization Strategy">
-  useMemo memoizes expensive computations, preventing recalculation on every
+  [`useMemo`](https://react.dev/reference/react/useMemo) memoizes expensive computations, preventing recalculation on every
   render when dependencies haven't changed.
 </ProTip>
 
@@ -240,7 +240,7 @@ return (
 ## useCallback
 
 <ProTip title="Performance Optimization">
-  useCallback memoizes functions themselves, preventing unnecessary recreations
+  [`useCallback`](https://react.dev/reference/react/useCallback) memoizes functions themselves, preventing unnecessary recreations
   that could trigger child component re-renders.
 </ProTip>
 
@@ -287,7 +287,7 @@ return (
 ## useLayoutEffect
 
 <ProTip title="Pro Tip">
-  `useLayoutEffect` is like `useEffect`, but it runs synchronously *after all DOM mutations*
+ [`useLayoutEffect`](https://react.dev/reference/react/useLayoutEffect) is like `useEffect`, but it runs synchronously *after all DOM mutations*
   and *before the browser paints*. Use it when you need to read layout or measure the DOM.
 </ProTip>
 
@@ -324,7 +324,7 @@ function LayoutEffectExample() {
 ## useContext
 
 <ProTip title="Pro Tip">
-  `useContext` lets you avoid prop drilling by accessing shared values (like theme or auth)
+  [`useContext`](https://react.dev/reference/react/useContext) lets you avoid prop drilling by accessing shared values (like theme or auth)
   directly from a context provider higher in the component tree.
 </ProTip>
 
@@ -382,14 +382,191 @@ function App() {
   that needs to be accessed across many parts of the app.
 </Callout>
 
-## React Portals
+## useTransition
+
+<ProTip>
+  The [`useTransition`](https://react.dev/reference/react/useTransition) hook helps you build responsive interfaces even during expensive rendering operations.
+</ProTip>
+
+**Basic Usage**
+
+<CodeBlock language="jsx">
+{`import { useState, useTransition } from 'react';
+
+function TabContainer() {
+  const [tab, setTab] = useState('home');
+  const [isPending, startTransition] = useTransition();
+
+  function selectTab(nextTab) {
+    startTransition(() => {
+      setTab(nextTab);
+    });
+  }
+
+  return (
+    <div>
+      <button 
+        onClick={() => selectTab('home')}
+        className={tab === 'home' ? 'active' : ''}
+      >
+        Home {isPending && <span>(loading...)</span>}
+      </button>
+      <button 
+        onClick={() => selectTab('about')}
+        className={tab === 'about' ? 'active' : ''}
+      >
+        About
+      </button>
+      {tab === 'home' && <Home />}
+      {tab === 'about' && <About />}
+    </div>
+  );
+}`}
+</CodeBlock>
+
+**Real-World Example: CodeBlock**
+<CodeBlock language="jsx">
+{`
+import CodeBlockHighlight from "./code-block-highlight";
+import React, { useState, useEffect, useTransition } from "react";
+import { useView } from "@/hooks/useView";
+import CodeBlockSkeleton from "./code-block-skeleton";
+import parserBabel from "prettier/plugins/babel";
+import parserMarkdown from "prettier/plugins/markdown";
+import pluginEstree from "prettier/plugins/estree";
+
+export function CodeBlock({ children, language = "jsx" }) {
+  const [copied, setCopied] = useState(false);
+  const [formattedCode, setFormattedCode] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const { md } = useView();
+
+  useEffect(() => {
+    async function formatCode() {
+      try {
+        startTransition(async () => {
+          let parser = "babel";
+          let plugins = [pluginEstree, parserBabel];
+
+          switch (language) {
+            case "markdown":
+            case "md":
+              parser = "markdown";
+              plugins = [pluginEstree, parserMarkdown];
+              break;
+            case "ts":
+            case "tsx":
+            case "typescript":
+              parser = "babel-ts";
+              plugins = [pluginEstree, parserTS];
+              break;
+            default:
+              parser = "babel";
+              plugins = [pluginEstree, parserBabel];
+          }
+          const result = await prettier.format(children.trim(), {
+            proseWrap: "always",
+            parser,
+            plugins,
+            semi: true,
+            singleQuote: false,
+            printWidth: !md ? 60 : 80,
+          });
+          setFormattedCode(result);
+        });
+      } catch (err) {
+        console.error("Prettier format error:", err);
+        setFormattedCode(children.trim());
+      }
+    }
+
+    formatCode();
+  }, [children, md]);
+
+  return(
+    <>
+     {isPending ? (
+        <CodeBlockSkeleton />
+      ) : (
+        formattedCode && (
+          <CodeBlockHighlight
+            formattedCode={formattedCode}
+            language={language}
+          />
+        )
+      )}
+    </>
+  )}
+`}
+</CodeBlock>
+
+## Custom Hooks
+
+<ProTip>
+  Custom hooks let you extract component logic into reusable functions. [React Docs](https://react.dev/learn/reusing-logic-with-custom-hooks)
+</ProTip>
+
+**useFetch Hook**
+
+Simplify data fetching:
+
+<CodeBlock language="jsx">
+{`
+import { useState, useEffect } from 'react';
+
+export function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        setData(json);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [url]);
+
+  return { data, loading, error };
+}
+
+function UserProfile({ userId }) {
+  const { data, loading, error } = useFetch(\`/api/users/\${userId}\`);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      <h2>{data.name}</h2>
+      <p>{data.bio}</p>
+    </div>
+  );
+}
+
+
+
+`}
+</CodeBlock>
+
+---
+
+## CreatePortal
 
 <ProTip title="What Problem Do Portals Solve?">
-  Portals allow you to render children into a DOM node that exists outside the parent component's hierarchy. 
+  [`createPortal`](https://react.dev/reference/react/createPortal) allow you to render children into a DOM node that exists outside the parent component's hierarchy. 
   Perfect for modals, tooltips, and notifications that need to "break out" of container CSS.
 </ProTip>
 
-### Basic Usage
+**Basic Usage**
 
 <CodeBlock language="jsx" showCopyButton={true}>
 {`import { createPortal } from 'react-dom';
@@ -426,10 +603,11 @@ function App() {
 </CodeBlock>
 
 
-### Real-World Example: Modal Dialog
+**Real-World Example: Modal Dialog**
 
 <CodeBlock language="jsx" showCopyButton={true}>
 {`
+import { createPortal } from "react-dom";
 function PizzaOrder() {
   const [showToppings, setShowToppings] = useState(false);
   
@@ -461,26 +639,12 @@ function PizzaOrder() {
 
 function Modal({ children, onClose }) {
   return createPortal(
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)',
-      display: 'grid',
-      placeItems: 'center',
-      zIndex: 1000
-    }}>
-      <div style={{
-        background: 'white',
-        padding: '2rem',
-        borderRadius: '8px'
-      }}>
+    <div className="fixed inset-0 bg-black bg-opacity-50 grid place-items-center z-[1000]">
+      <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
         {children}
-        <button 
+        <button
           onClick={onClose}
-          style={{ marginTop: '1rem' }}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
         >
           Done
         </button>
@@ -493,3 +657,15 @@ function Modal({ children, onClose }) {
 </CodeBlock>
 
 <CommonMistake title="Watch Out!"> Always check if the DOM node exists before creating a portal. In Next.js, use useEffect to ensure the node is available on the client side. </CommonMistake>
+
+## Resources
+
+[React Documentation](https://react.dev)
+
+[React DevTools](https://react.dev/learn/react-developer-tools)
+
+[React Patterns](https://reactpatterns.com)
+
+[useHooks](https://usehooks.com)
+
+[Epic React](https://epicreact.dev)

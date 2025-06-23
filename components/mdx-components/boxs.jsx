@@ -23,3 +23,11 @@ export function CommonMistake({ children }) {
     </div>
   );
 }
+
+export function FileStructure({ children }) {
+  return (
+    <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md font-mono text-sm my-6">
+      <pre className="whitespace-pre-wrap">{children}</pre>
+    </div>
+  );
+}

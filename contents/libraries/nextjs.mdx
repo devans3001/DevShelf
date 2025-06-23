@@ -1,0 +1,118 @@
+---
+title: "The Complete Next.js Guide"
+description: "From setup to advanced patterns for production-ready apps"
+order: 7
+---
+
+# Next.js Masterclass
+
+<ProTip >
+  Next.js is the React framework for production with hybrid static & server rendering. [Official Documentation](https://nextjs.org/docs)
+</ProTip>
+
+## 📦 Installation & Setup
+
+### Creating a New Project
+
+<CodeBlock language="md">
+{`npx create-next-app@latest
+# or
+yarn create next-app
+# or
+pnpm create next-app`}
+</CodeBlock>
+
+<Callout type="info">
+ Use the interactive CLI to enable TypeScript, ESLint, Tailwind CSS, and other features during project creation
+i.e You can pass` --ts` for TypeScript support or `--app` to use the new App Router layout.
+</Callout>
+
+
+**📁 Folder Structure**
+<FileStructure>
+my-next-app/
+├─ app/             → App Router structure (recommended)
+│  ├─ layout.js     → Shared layout wrapper
+│  ├─ page.js       → Route entry point (like index.html)
+│  └─ about/        → Nested route (/about)
+├─ public/          → Static files (images, favicons)
+├─ styles/          → Global styles (CSS or Tailwind)
+├─ next.config.js   → Custom Next.js configuration
+</FileStructure>
+
+
+## Routing Systems
+
+### App Router (Recommended)
+
+<CodeBlock language="jsx">
+{`// app/dashboard/page.js
+export default function Dashboard() {
+  return <h1>Dashboard</h1>
+}`}
+</CodeBlock>
+
+<NextjsTable/>
+
+## Data Fetching Patterns
+### Server Components
+<CodeBlock language="jsx">
+{`// app/dashboard/page.js
+async function getData() {
+  const res = await fetch("https://api.example.com/data", {
+    next: { revalidate: 3600 } // ISR: Revalidate every hour
+  })
+  return res.json()
+}
+
+export default async function Dashboard() {
+  const data = await getData()
+  
+  return <div>{data.title}</div>
+}`}
+</CodeBlock>
+
+### Client-side Fetching
+
+<CodeBlock language="jsx">
+{`"use client"
+
+import { useEffect, useState } from 'react'
+
+export default function ClientData() {
+  const [data, setData] = useState(null)
+  
+  useEffect(() => {
+    fetch('/api/data')
+      .then(res => res.json())
+      .then(setData)
+  }, [])
+  
+  return <div>{data?.title}</div>
+}`}
+</CodeBlock>
+
+## API Routes
+
+### Basic Endpoint
+
+<CodeBlock language="jsx">
+{`// app/api/hello/route.js
+export async function GET() {
+  return Response.json({ message: 'Hello World' })
+}`}
+</CodeBlock>
+
+### Dynamic Endpoint
+
+<CodeBlock language="jsx">
+{`// app/api/users/[id]/route.js
+export async function GET(request, { params }) {
+  const user = await getUser(params.id)
+  return Response.json(user)
+}`}
+</CodeBlock>
+
+<ProTip> Connect your GitHub repo to Vercel for automatic deployments on push </ProTip>
+
+## Resources

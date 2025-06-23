@@ -41,6 +41,7 @@ export const sections = [
         subItems: [
           { name: "React Hooks", href: "/docs/libraries/react-hooks" },
           { name: "Tanstack Query", href: "/docs/libraries/tanstack-query" },
+          { name: "Tailwind Css ", href: "/docs/libraries/tailwindcss" },
         ],
       },
       {

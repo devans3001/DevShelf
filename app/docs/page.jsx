@@ -4,9 +4,10 @@ import { getDocsIndex } from "@/lib/mdx-all";
 import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
 import { Breadcrumbs } from "@/components/Docs/docs-breadcrumb";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata() {
-  const { frontmatter } = await getDocsIndex();
+  const { frontmatter } = getDocsIndex();
 
   return {
     title: frontmatter.title,
@@ -25,15 +26,16 @@ export async function generateMetadata() {
 }
 
 export default async function DocsIndexPage({}) {
-  const { raw, headings } = await getDocsIndex();
+  const docs = getDocsIndex();
+
 
   return (
     <>
       <div className="flex gap-8 ">
         <div className="prose dark:prose-invert flex-1">
            <Breadcrumbs/>
-          <MDXRemote source={raw} components={CustomComponents} />
-          <ClientWrapper headings={headings} />
+          <MDXRemote source={docs.raw} components={CustomComponents} />
+          <ClientWrapper headings={docs.headings} />
         </div>
       </div>
       <DocsPager currentSlug={`docs`} />

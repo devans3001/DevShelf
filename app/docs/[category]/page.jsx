@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 export async function generateMetadata({ params }) {
   const { category } = await params;
 
-  const { frontmatter } = await getDocsParams(category);
+  const { frontmatter } = getDocsParams(category);
 
   return {
     title: frontmatter.title,
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
 export default async function DocsIndexPage({ params }) {
   const { category } = await params;
 
-  const docs = await getDocsParams(category);
+  const docs = getDocsParams(category);
 
   const id = category || "/";
 

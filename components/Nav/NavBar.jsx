@@ -7,10 +7,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import SearchBar from "./SearchBar";
 import Routes from "./Routes";
 import { useView } from "@/hooks/useView";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useNavbarHeight } from "@/hooks/NavbarHeightContext";
 import MenuBar from "./Menu";
-import DevShelf from "./DevShelf";
 
 export function Navbar() {
   const { setNavbarHeight } = useNavbarHeight();
