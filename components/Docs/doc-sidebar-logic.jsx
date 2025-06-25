@@ -8,11 +8,14 @@ import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useTransition } from "react";
 import { sections } from "./docs-sidebar";
+import DocsSidebarLogicSubitems from "./docs-sidebar-logic-subitems";
+import { Skeleton } from "../ui/skeleton";
 
 function DocSidebarLogic() {
       const pathname = usePathname();
+      const [isPending, startTransition] = useTransition();
   return (
     <>
       {sections?.map((section) => (
@@ -30,28 +33,17 @@ function DocSidebarLogic() {
                           : "hover:bg-accent/50"
                       }`}
                     >
+                     { isPending ?  <Skeleton className="h-4 w-3/4" />:
+                      <>
                       <div className="flex items-center gap-2">
                         <span className="opacity-60">{item.icon}</span>
                         {item.name}
                       </div>
                       <ChevronDown className="w-4 h-4 opacity-60 transition-transform duration-200 collapsible-trigger-icon" />
+                      </>
+                      }
                     </CollapsibleTrigger>
-                    <CollapsibleContent className="ml-6 mt-1 space-y-1">
-                      {item.subItems.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          href={subItem.href}
-                          className={`flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors ${
-                            pathname === subItem.href
-                              ? "bg-primary/10 text-primary"
-                              : "hover:bg-accent/50"
-                          }`}
-                        >
-                          <span className="opacity-60">•</span>
-                          {subItem.name}
-                        </Link>
-                      ))}
-                    </CollapsibleContent>
+                    <DocsSidebarLogicSubitems cat={item.subItems} pathname={pathname} startTransition={startTransition} />
                   </Collapsible>
                 ) : (
                   <Link

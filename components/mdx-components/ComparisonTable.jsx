@@ -67,32 +67,35 @@ ComparisonTable.Header = Header;
 ComparisonTable.Body = Body;
 ComparisonTable.Row = Row;
 
-export function Lol() {
-  return (
-    <div className="overflow-x-auto my-6">
-      <h3 className="text-base font-semibold mb-2">
-        🔄 Server vs Client Components
-      </h3>
-      <table className="min-w-full text-sm border dark:border-zinc-700 rounded-md overflow-hidden">
-        <thead className="bg-muted text-left">
-          <tr>
-            <th className="px-4 py-2 border-r dark:border-zinc-700">Feature</th>
-            <th className="px-4 py-2 border-r dark:border-zinc-700">
-              Server Component
-            </th>
-            <th className="px-4 py-2">Client Component</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y dark:divide-zinc-700">
-          {rows.map((row, i) => (
-            <tr key={i}>
-              <td className="px-4 py-2 font-medium">{row.feature}</td>
-              <td className="px-4 py-2">{row.server}</td>
-              <td className="px-4 py-2">{row.client}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+
+//THE BIRTH PLACE OF THE TABLE ABOVE
+
+// export function Lol() {
+//   return (
+//     <div className="overflow-x-auto my-6">
+//       <h3 className="text-base font-semibold mb-2">
+//         🔄 Server vs Client Components
+//       </h3>
+//       <table className="min-w-full text-sm border dark:border-zinc-700 rounded-md overflow-hidden">
+//         <thead className="bg-muted text-left">
+//           <tr>
+//             <th className="px-4 py-2 border-r dark:border-zinc-700">Feature</th>
+//             <th className="px-4 py-2 border-r dark:border-zinc-700">
+//               Server Component
+//             </th>
+//             <th className="px-4 py-2">Client Component</th>
+//           </tr>
+//         </thead>
+//         <tbody className="divide-y dark:divide-zinc-700">
+//           {rows.map((row, i) => (
+//             <tr key={i}>
+//               <td className="px-4 py-2 font-medium">{row.feature}</td>
+//               <td className="px-4 py-2">{row.server}</td>
+//               <td className="px-4 py-2">{row.client}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }

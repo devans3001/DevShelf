@@ -6,6 +6,8 @@ import { useView } from "@/hooks/useView";
 export default function DocsLayout({ children }) {
   const { view,lg } = useView();
 
+  // REMOVES the scrollspy on mobile devices
+  // and adds it on larger screens
   const isScroll = view >= 1278;
   return (
     <div className="flex min-h-screen w-full">

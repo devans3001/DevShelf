@@ -5,6 +5,8 @@ import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
 import { Breadcrumbs } from "@/components/Docs/docs-breadcrumb";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
+import { getDocsInCategory } from "@/lib/mdx";
 
 export async function generateMetadata() {
   const { frontmatter } = getDocsIndex();
@@ -27,7 +29,6 @@ export async function generateMetadata() {
 
 export default async function DocsIndexPage({}) {
   const docs = getDocsIndex();
-
 
   return (
     <>

@@ -70,16 +70,18 @@ export default function SearchBar() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [docs, setDocs] = useState([]);
-  // const [isLoading, startTransition] = useTransition(null);
+  const [isLoading, startTransition] = useTransition(null);
   const [results, setResults] = useState([]);
   const router = useRouter();
 
+  // console.log(isLoading)
+
   useEffect(() => {
-    // startTransition(async () => {
+    startTransition(() => {
       fetch("/api/search/mdx")
         .then((res) => res.json())
         .then(setDocs);
-    // });
+    })
   }, []);
 
   // Initialize Fuse only once when docs load
@@ -97,7 +99,7 @@ export default function SearchBar() {
       minMatchCharLength: 2,
       ignoreLocation: true,
     });
-  }, [docs]); // Recreate only when docs change
+  }, [docs]); 
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -108,9 +110,8 @@ export default function SearchBar() {
       setResults(searchResults);
     }
   }, [query]);
-  console.log(" result", results);
+  // console.log(" result", results);
 
-  // Toggle with CMD+K
   useEffect(() => {
     const down = (e) => {
       if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {

@@ -1,19 +1,27 @@
-// app/not-found.tsx
+// app/error.tsx
 "use client";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Terminal, Ghost, Code2, RotateCw } from "lucide-react";
+import { AlertTriangle, Home, RefreshCw, Bug, Terminal } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
-export default function NotFound() {
+export default function ErrorPage({
+  error,
+  reset,
+}) {
   const pathname = usePathname();
-  const isAPIRoute = pathname.startsWith('/api');
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = process.env.NODE_ENV === "development";
+
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-12 bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-12 bg-gradient-to-b from-background to-destructive/5">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -21,41 +29,43 @@ export default function NotFound() {
         className="max-w-md mx-auto"
       >
         <div className="relative mb-8">
-          <Ghost className="w-24 h-24 text-primary mx-auto" />
-          <Terminal className="absolute -right-4 -bottom-4 w-10 h-10 text-purple-600 bg-background rounded-md p-1 border" />
+          <AlertTriangle className="w-24 h-24 text-destructive mx-auto" />
+          <Bug className="absolute -right-4 -bottom-4 w-10 h-10 text-foreground bg-background rounded-md p-1 border" />
         </div>
 
         <h1 className="text-3xl md:text-4xl font-bold mb-3">
-          404: Resource Not Found
+          Unexpected Error Occurred
         </h1>
-        
+
         <div className="bg-secondary/50 p-4 rounded-lg mb-6 font-mono text-sm text-left overflow-x-auto">
-          <p className="text-muted-foreground mb-2">Requested path:</p>
-          <code className="text-foreground break-all">{pathname}</code>
+          <p className="text-muted-foreground mb-2">Error details:</p>
+          <code className="text-destructive break-all">{error.message}</code>
+          {error.digest && (
+            <>
+              <p className="text-muted-foreground mt-2 mb-1">Error digest:</p>
+              <code className="text-foreground break-all">{error.digest}</code>
+            </>
+          )}
         </div>
 
-        {isAPIRoute ? (
-          <p className="text-muted-foreground mb-6">
-            API endpoint not implemented. Check your API routes.
-          </p>
-        ) : (
-          <p className="text-muted-foreground mb-6">
-            The resource you requested couldn't be located in the application bundle.
-          </p>
-        )}
+        <p className="text-muted-foreground mb-6">
+          An unexpected error occurred while processing your request.
+        </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button asChild variant="default" className="gap-2">
-            <Link href="/">
-              <RotateCw className="w-4 h-4" />
-              Return Home
-            </Link>
+          <Button
+            onClick={() => reset()}
+            variant="default"
+            className="gap-2"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Try Again
           </Button>
-          
+
           <Button asChild variant="secondary" className="gap-2">
-            <Link href="/docs">
-              <Code2 className="w-4 h-4" />
-              View Documentation
+            <Link href="/">
+              <Home className="w-4 h-4" />
+              Return Home
             </Link>
           </Button>
         </div>
@@ -66,8 +76,19 @@ export default function NotFound() {
               Development Hint
             </h3>
             <p className="text-xs text-destructive/80">
-              This route isn't matched in your app router. Check your page.tsx files.
+              Check the browser console for more details. This error occurred at:
             </p>
+            <code className="text-xs mt-1 text-destructive/80 break-all block">
+              {pathname}
+            </code>
+            {error.stack && (
+              <details className="mt-2 text-xs text-destructive/80">
+                <summary>Stack trace</summary>
+                <pre className="overflow-auto max-h-40 mt-1 p-1 bg-black/10 rounded">
+                  {error.stack}
+                </pre>
+              </details>
+            )}
           </div>
         )}
       </motion.div>
@@ -81,15 +102,21 @@ export default function NotFound() {
           </h3>
           <div className="space-y-2 text-sm">
             <p>
-              <span className="text-muted-foreground">Route:</span>{' '}
+              <span className="text-muted-foreground">Route:</span>{" "}
               <code className="bg-secondary px-1 rounded">{pathname}</code>
             </p>
             <p>
-              <span className="text-muted-foreground">Environment:</span>{' '}
-              <code className="bg-secondary px-1 rounded">{process.env.NODE_ENV}</code>
+              <span className="text-muted-foreground">Environment:</span>{" "}
+              <code className="bg-secondary px-1 rounded">
+                {process.env.NODE_ENV}
+              </code>
+            </p>
+            <p>
+              <span className="text-muted-foreground">Error name:</span>{" "}
+              <code className="bg-secondary px-1 rounded">{error.name}</code>
             </p>
             <p className="pt-2 text-muted-foreground text-xs">
-              Tip: Check your app router structure in /app directory
+              Tip: Check your component that caused the error for runtime issues
             </p>
           </div>
         </div>
