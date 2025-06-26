@@ -1,0 +1,175 @@
+---
+title: "Zustand "
+description: "Complete guide to choosing between Zustand and Redux for your React apps"
+order: 8
+---
+
+
+# State Management: Zustand vs Redux
+
+<Callout type="info" >
+  Choosing the right state management depends on your app's complexity and team preferences. This guide compares both solutions objectively.
+</Callout>
+
+## 🚀 Zustand Overview
+
+**Zustand is a small, fast, and scalable state management solution for React applications. It’s built by the same team behind [Jotai](https://github.com/pmndrs/jotai) and [React Three Fiber](https://github.com/pmndrs/react-three-fiber).**
+
+### Installation
+<CodeBlock language="md">
+{`npm install zustand
+ or
+yarn add zustand`}
+</CodeBlock>
+
+<Callout type="warning"> Make sure you're using React 16.8 or later as Zustand relies on hooks. </Callout>
+
+### 🧠 Creating a Store
+
+**You define your store outside components using the `create` function.**
+
+<CodeBlock language="js">
+{`// store.js
+import { create } from 'zustand'
+
+/*
+  Create a store that holds a count state and functions to manipulate it.
+*/
+const useCounterStore = create((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  decrement: () => set((state) => ({ count: state.count - 1 })),
+  reset: () => set({ count: 0 }),
+}))
+
+export default useCounterStore
+`}
+</CodeBlock>
+
+### 🧪 Using the Store in Components
+
+<CodeBlock language="jsx">
+{`// Counter.jsx
+import useCounterStore from './store'
+
+export default function Counter() {
+  const count = useCounterStore((state) => state.count)
+  const increment = useCounterStore((state) => state.increment)
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={increment}>Increment</button>
+    </div>
+  )
+}
+`}
+</CodeBlock>
+
+<ProTip>
+📝 You can selectively read from the store to prevent unnecessary re-renders.
+</ProTip>
+<Callout type="tip">
+Zustand shines when you need simple global state without the Redux ecosystem
+</Callout>
+
+### 🧩 Middleware: Persisting State
+
+**Zustand offers middleware to `persist` state in localStorage.**
+
+<CodeBlock language="md">
+{`npm install zustand/middleware
+`}
+</CodeBlock>
+
+<CodeBlock language="jsx">
+{`// persistedStore.js
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+
+const useUserStore = create(
+  persist(
+    (set) => ({
+      name: 'Guest',
+      setName: (name) => set({ name }),
+    }),
+    {
+      name: 'user-storage', // key in localStorage
+    }
+  )
+)
+`}
+</CodeBlock>
+
+### 🔗 Middleware: Subscribe with Selector
+
+<CodeBlock language="jsx">
+{`import { create } from 'zustand'
+import { subscribeWithSelector } from 'zustand/middleware'
+
+const useStore = create(
+  subscribeWithSelector((set) => ({
+    count: 0,
+    inc: () => set((s) => ({ count: s.count + 1 })),
+  }))
+)
+
+// Subscribe outside React
+useStore.subscribe(
+  (state) => state.count,
+  (count) => {
+    console.log('count changed to', count)
+  }
+)
+`}
+</CodeBlock>
+
+### 🎯 Using Zustand with Arrays and Objects
+
+<CodeBlock language="jsx">
+{`const useTodoStore = create((set) => ({
+  todos: [],
+  addTodo: (todo) =>
+    set((state) => ({
+      todos: [...state.todos, todo],
+    })),
+  removeTodo: (id) =>
+    set((state) => ({
+      todos: state.todos.filter((t) => t.id !== id),
+    })),
+}))
+`}
+</CodeBlock>
+
+
+### 💡 Tips & Best Practices
+<ProTip>
+❌ Don’t create the store inside a component.
+
+✅ Use named selectors to avoid unnecessary re-renders.
+
+✅ Group related state and actions.
+
+✅ Use middleware for scaling: persist, immer, subscribeWithSelector, devtools
+
+❌ Avoid large monolithic stores — consider domain-based stores.
+</ProTip>
+
+**⚠️ Common Pitfalls**
+<CommonMistake>
+
+    Re-renders: If you read the whole store (useStore() without selector), every change causes a re-render.
+
+    SSR Issues: If using persist, guard access to localStorage in Next.js or SSR setups.
+
+    Mutability: Avoid mutating state directly; always use set.
+</CommonMistake>
+
+
+<ProTip> For new projects, start with Zustand and migrate to Redux only if you hit its limitations. Most apps don't need Redux's full power. </ProTip>
+
+## Resources (Zustand & Redux)
+
+[Zustand Docs](https://docs.pmnd.rs/zustand/getting-started/introduction)
+
+[Awesome Zustand](https://github.com/pmndrs/zustand#examples)

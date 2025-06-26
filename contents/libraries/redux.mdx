@@ -1,0 +1,87 @@
+---
+title: "Redux & Redux Toolkit Documentation"
+description: "Comprehensive guide to state management with Redux and Redux Toolkit"
+order: 9
+---
+
+# Redux & Redux Toolkit: State Management
+
+## Overview
+<ProTip>
+
+Redux is a predictable state container for JavaScript apps, while Redux Toolkit is the official, opinionated, batteries-included toolset for efficient Redux development.
+</ProTip>
+
+## Installation
+**Redux + React-Redux**
+
+<CodeBlock language="md">
+{`npm install redux react-redux`}
+</CodeBlock>
+
+**Redux Toolkit (Recommended)**
+<CodeBlock language="md">
+{`npm install @reduxjs/toolkit react-redux`}
+</CodeBlock>
+
+## Basic Redux Example
+**Store Setup (Traditional Redux)**
+
+<CodeBlock language="jsx">
+{`import { createStore } from 'redux'
+
+// Reducer
+function counterReducer(state = { value: 0 }, action) {
+  switch (action.type) {
+    case 'counter/incremented':
+      return { value: state.value + 1 }
+    case 'counter/decremented':
+      return { value: state.value - 1 }
+    default:
+      return state
+  }
+}
+
+// Store
+const store = createStore(counterReducer)
+
+// Dispatch actions
+store.dispatch({ type: 'counter/incremented' })`}
+</CodeBlock>
+
+**Connecting to React**
+
+<CodeBlock language="jsx">
+{`import { Provider, useSelector, useDispatch } from 'react-redux'
+
+function App() {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  )
+}
+
+function Counter() {
+  const count = useSelector(state => state.value)
+  const dispatch = useDispatch()
+
+  return (
+    <div>
+      <button onClick={() => dispatch({ type: 'counter/decremented' })}>-</button>
+      <span>{count}</span>
+      <button onClick={() => dispatch({ type: 'counter/incremented' })}>+</button>
+    </div>
+  )
+}`}
+</CodeBlock>
+
+## 🧠 Why Redux Toolkit?
+
+Redux used to require lots of boilerplate. **Redux Toolkit** solves this by:
+
+- Reducing boilerplate
+- Handling immutability with `immer`
+- Built-in support for async actions via `createAsyncThunk`
+- DevTools integration
+- Cleaner, slice-based logic
