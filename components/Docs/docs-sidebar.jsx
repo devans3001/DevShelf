@@ -36,7 +36,7 @@ export const sections = [
     items: [
       {
         name: "Libraries & Frameworks",
-        href: "/docs/libs",
+        href: "/docs/libraries",
         icon: <Library size={16} />,
         subItems: "libraries",
       },
@@ -44,7 +44,7 @@ export const sections = [
         name: "Code Snippets",
         href: "/docs/snippets",
         icon: <Code size={16} />,
-        // subItems: "snippets",
+        subItems: "snippets",
       },
       {
         name: "Boilerplates",

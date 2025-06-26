@@ -1,0 +1,58 @@
+---
+title: Helper Functions
+description: A collection of small but powerful utility functions to speed up your development workflow.
+slug: snippets/helper-functions
+order: 10
+keywords: ["helper", "utilities", "javascript", "copy", "format", "slug"]
+---
+
+# 🧠 Helper Functions
+
+<ProTip>
+
+These small reusable functions help reduce boilerplate, enhance readability, and make your codebase more maintainable.
+</ProTip>
+<Callout type="info">
+Many of these are framework-agnostic. You can use them in React, Next.js, Vue, or plain JavaScript.
+</Callout>
+
+## 📋 `copyToClipboard(text)`
+
+Copy any string to the user's clipboard.
+
+<CodeBlock language="js">
+{`
+export async function copyToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log("Copied to clipboard:", text);
+  } catch (err) {
+    console.error("Failed to copy:", err);
+  }
+}
+
+//Usage
+copyToClipboard("Hello world!");
+`}
+</CodeBlock>
+
+
+## 🧮 formatToNaira(amount)
+<CodeBlock language="js">
+{`export function formatToNaira(amount,currency="NGN",fraction=0) {
+  // Create a new instance of Intl.NumberFormat for Nigerian currency
+  const formatter = new Intl.NumberFormat('en-NG', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: fraction
+  });
+
+  // Format the given amount
+  return formatter.format(amount);
+}
+
+//Usage
+formatToNaira(1000000, "NGN", 2) // N1,000,000.00
+
+`}
+</CodeBlock>

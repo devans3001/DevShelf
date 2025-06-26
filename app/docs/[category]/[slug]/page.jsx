@@ -4,6 +4,7 @@ import { CustomComponents } from "@/components/mdx-components/mdx-components";
 import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
 import { Breadcrumbs } from "@/components/Docs/docs-breadcrumb";
+import EditOnGitHub from "@/components/Docs/docs-edit-github";
 
 export async function generateMetadata({params}) {
 const { category, slug } = await params;
@@ -40,6 +41,7 @@ export default async function DocPage({ params }) {
           <ClientWrapper headings={headings} />
         </div>
       </div>
+      <EditOnGitHub path={doc?.relativePath} />
       <DocsPager currentSlug={`docs/${category}/${slug}`} />
     </>
   );

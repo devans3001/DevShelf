@@ -1,0 +1,199 @@
+---
+title: Custom Hooks
+description: Reusable hooks to simplify React state and lifecycle logic.
+order: 11
+keywords: [react, hooks, custom hooks, useState, useEffect, debounce]
+---
+
+# ⚓ Custom Hooks
+
+<ProTip>
+
+React Hooks are a powerful way to encapsulate logic. These custom hooks will help streamline state, effects, and events across your app.
+</ProTip>
+
+<Callout type="info">
+All hooks are built using plain React (no dependencies). Copy and paste, or extract them to a personal library!
+</Callout>
+
+## 🎯 useOnClickOutside
+
+Detect clicks outside an element (commonly used in dropdowns and modals).
+
+<CodeBlock language="js">
+{`import { useEffect } from 'react'
+
+function useClickOutside(ref, callback) {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        callback()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [ref, callback])
+}
+
+// Usage:
+const ref = useRef()
+useClickOutside(ref, () => setIsOpen(false))`}
+</CodeBlock>
+
+## ✅ useViewport
+
+This aligns well with what the hook actually does — track the viewport width and derive breakpoint states (md, sm, lg).
+
+<CodeBlock language="js">
+{`export function useViewport() {
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setWidth(window.innerWidth);
+      };
+
+      handleResize(); // initialize
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
+  return {
+    width,
+    sm: width >= 640,
+    md: width >= 768,
+    lg: width >= 1024,
+  };
+}
+
+//Usage
+const {width,sm} = useViewport()
+`}
+</CodeBlock>
+
+## 🎁 useLocalStorage
+
+<CodeBlock language="jsx">
+{`import { useState, useEffect } from "react";
+
+export function useLocalStorageState(initialState, key) {
+  const [value, setValue] = useState(function () {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : initialState;
+  });
+
+  useEffect(
+    function () {
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+    [value, key]
+  );
+
+  return [value, setValue];
+}
+
+// Usage:
+const [theme, setTheme] = useLocalStorage('theme', 'light')
+`}
+</CodeBlock>
+
+## 🔁 `useDebounce`
+
+Delays a value change until a user stops typing (or performing an action).
+
+<CodeBlock language="js">
+{`
+import { useState, useEffect } from "react";
+
+export function useDebounce(value, delay = 300) {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+}
+
+// Usage:
+const debouncedSearch = useDebounce(searchQuery, 500);
+`}
+</CodeBlock>
+
+## useSearchParamHook()
+Custom hook for managing URL search parameters in a Next.js App Router app.
+
+<CodeBlock language="jsx">
+{`
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useMemo } from "react";
+
+export function useSearchParamsHook() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Get all current search params as an object
+  const params = useMemo(() => {
+    const paramsObj = {};
+    searchParams.forEach((value, key) => {
+      paramsObj[key] = value;
+    });
+    return paramsObj;
+  }, [searchParams]);
+
+  // Get a specific parameter value
+  const getParam = useCallback(
+    (key) => {
+      return searchParams.get(key);
+    },
+    [searchParams]
+  );
+
+  // Set or update a parameter
+  const setParam = useCallback(
+    (key, value) => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.set(key, value);
+      router.push(\`?${newParams.toString()}\`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+  // Remove a parameter
+  const removeParam = useCallback(
+    (key) => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete(key);
+      router.push(\`?${newParams.toString()}\`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+   // Set multiple parameters at once from an object
+  const setMultipleParams = useCallback(
+    (params) => {
+      const newParams = new URLSearchParams(searchParams.toString());
+      Object.entries(params).forEach(([key, value]) => {
+        newParams.set(key, value);
+      });
+      router.push(\`?${newParams.toString()}\`, { scroll: false });
+    },
+    [router, searchParams]
+  );
+
+ return {
+    params,             // All params as key-value pairs
+    getParam,           // Get a single param
+    setParam,           // Set a single param
+    removeParam,        // Delete a single param
+    setMultipleParams,  // Set multiple at once
+  };
+
+}`}
+</CodeBlock>

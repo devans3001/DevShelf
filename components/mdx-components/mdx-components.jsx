@@ -24,6 +24,7 @@ import TechTag from "./texh-tag";
 import { H2, Heading } from "./Headers";
 import ExternalLink from "../ExternalLink";
 import NextjsTable from "./NextjsTable";
+import ReduxTable from "./ReduxTable";
 
 
 
@@ -77,5 +78,5 @@ export const CustomComponents = {
   Moon,
   Copy,
   RefreshCw,
-  Zap, Cpu, AlertTriangle,Paintbrush, GitBranch, Package, Scale
+  Zap, Cpu, AlertTriangle,Paintbrush, GitBranch, Package, Scale,ReduxTable
 };

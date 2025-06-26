@@ -85,3 +85,183 @@ Redux used to require lots of boilerplate. **Redux Toolkit** solves this by:
 - Built-in support for async actions via `createAsyncThunk`
 - DevTools integration
 - Cleaner, slice-based logic
+
+### Redux Toolkit Basics
+
+**🔧 Store Setup**
+
+<CodeBlock language="js">
+{`// store.js
+import { configureStore } from '@reduxjs/toolkit'
+import counterReducer from './features/counterSlice'
+
+/*
+  Configure the Redux store and add slices as reducers.
+*/
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+})
+
+export default store
+`}
+</CodeBlock>
+
+<CodeBlock language="jsx">
+{`// index.js or main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import { Provider } from 'react-redux'
+import store from './store'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+)
+`}
+</CodeBlock>
+
+### ✂️ Creating a Slice
+
+<CodeBlock language="jsx">
+{`// features/counterSlice.js
+import { createSlice } from '@reduxjs/toolkit'
+
+/*
+  Create a slice with initial state, reducers, and auto-generated actions.
+*/
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    value: 0,
+  },
+  reducers: {
+    increment: (state) => {
+      state.value += 1 // immer makes this safe
+    },
+    decrement: (state) => {
+      state.value -= 1
+    },
+    reset: (state) => {
+      state.value = 0
+    },
+  },
+})
+
+export const { increment, decrement, reset } = counterSlice.actions
+export default counterSlice.reducer
+`}
+</CodeBlock>
+
+### 🧪 Using Redux in Components
+
+<CodeBlock language="jsx">
+{`// Counter.jsx
+import { useSelector, useDispatch } from 'react-redux'
+import { increment, decrement, reset } from './features/counterSlice'
+
+function Counter() {
+  const count = useSelector((state) => state.counter.value)
+  const dispatch = useDispatch()
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => dispatch(increment())}>+1</button>
+      <button onClick={() => dispatch(decrement())}>-1</button>
+      <button onClick={() => dispatch(reset())}>Reset</button>
+    </div>
+  )
+}
+`}
+</CodeBlock>
+
+## ⚙️ Async Logic with createAsyncThunk
+
+<CodeBlock language="jsx">
+{`// features/userSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+
+/*
+  Thunk to fetch user data
+*/
+export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/users/1')
+  const data = await res.json()
+  return data
+})
+
+const userSlice = createSlice({
+  name: 'user',
+  initialState: {
+    user: null,
+    loading: false,
+    error: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.loading = false
+        state.user = action.payload
+      })
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+  },
+})
+
+export default userSlice.reducer
+`}
+</CodeBlock>
+
+<CodeBlock language="jsx">
+{`// In a component
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchUser } from './features/userSlice'
+
+function UserProfile() {
+  const { user, loading, error } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+
+  return (
+    <div>
+      <button onClick={() => dispatch(fetchUser())}>Load User</button>
+      {loading && <p>Loading...</p>}
+      {user && <p>Hello, {user.name}</p>}
+      {error && <p>Error: {error}</p>}
+    </div>
+  )
+}
+`}
+</CodeBlock>
+
+<ReduxTable/>
+
+## 🧼 Best Practices
+
+<ProTip>
+✅ Use one slice per domain (e.g., user, todos, counter)
+
+✅ Co-locate slice logic in features/ folder
+
+✅ Use thunks for async side effects
+
+❌ Avoid writing reducers manually always use createSlice
+
+✅ Extract selectors if using same data in many places
+</ProTip>
+
+## Resources
+
+[Redux Toolkit Docs](https://redux-toolkit.js.org/)
+
+[React Redux Docs](https://react-redux.js.org/)

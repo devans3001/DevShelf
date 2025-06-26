@@ -5,6 +5,7 @@ import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
 import { Breadcrumbs } from "@/components/Docs/docs-breadcrumb";
 import { notFound } from "next/navigation";
+import EditOnGitHub from "@/components/Docs/docs-edit-github";
 
 export async function generateMetadata({ params }) {
   const { category } = await params;
@@ -43,6 +44,7 @@ export default async function DocsIndexPage({ params }) {
           <ClientWrapper headings={docs.headings} />
         </div>
       </div>
+      <EditOnGitHub path={docs.relativePath} />
       <DocsPager currentSlug={`docs/${id}`} />
     </>
   );

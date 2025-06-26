@@ -4,9 +4,8 @@ import { getDocsIndex } from "@/lib/mdx-all";
 import ClientWrapper from "@/hooks/ClientWrapper";
 import { DocsPager } from "@/components/Docs/docs-pager";
 import { Breadcrumbs } from "@/components/Docs/docs-breadcrumb";
-import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
-import { getDocsInCategory } from "@/lib/mdx";
+import ExternalLink from "@/components/ExternalLink";
+import EditOnGitHub from "@/components/Docs/docs-edit-github";
 
 export async function generateMetadata() {
   const { frontmatter } = getDocsIndex();
@@ -30,6 +29,7 @@ export async function generateMetadata() {
 export default async function DocsIndexPage({}) {
   const docs = getDocsIndex();
 
+
   return (
     <>
       <div className="flex gap-8 ">
@@ -39,6 +39,7 @@ export default async function DocsIndexPage({}) {
           <ClientWrapper headings={docs.headings} />
         </div>
       </div>
+       <EditOnGitHub path={docs.relativePath} />
       <DocsPager currentSlug={`docs`} />
     </>
   );
