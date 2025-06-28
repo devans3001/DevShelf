@@ -15,7 +15,6 @@ export function ProjectShowcase() {
     "cms-demo",
     "raven-tech-test",
     "cipher-shield",
-    "smart-seo",
     "notion-clone-youtube",
   ];
 

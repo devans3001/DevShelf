@@ -1,4 +1,3 @@
-// app/page.js\""
 
 "use client";
 import Features from "@/components/Home/Features";
@@ -6,8 +5,6 @@ import Hero from "@/components/Home/Hero";
 import CTA from "@/components/Home/CTA";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ProjectShowcase } from "@/components/Showcase";
-import { useSearchParamsHook } from "@/hooks/SOMEHOOK";
-import { useEffect } from "react";
 
 export default function HomePage() {
  
@@ -19,7 +16,6 @@ export default function HomePage() {
       <ProjectShowcase/>
       <ScrollToTop />
 
-      {/* LATER ON WE COULD SHOW SOME OF MY PROJECTS MADE USING THINGS HERE FROM VERCEL  */}
     </div>
   );
 }

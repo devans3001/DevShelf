@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "skeleton-elements/css";
 import { Toaster } from "@/components/ui/sonner";
-
+import { Analytics } from "@vercel/analytics/next"
 import ThemeProvider from "@/hooks/ThemeProvider";
 import { Navbar } from "@/components/Nav/NavBar";
 import { NavbarHeightProvider } from "@/hooks/NavbarHeightContext";
@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
             <HeaderProvider>{children}</HeaderProvider>
           </NavbarHeightProvider>
           <Toaster />
-
+<Analytics/>
           <Footer />
         </ThemeProvider>
           </Providers>
