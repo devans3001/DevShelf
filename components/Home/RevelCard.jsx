@@ -1,8 +1,6 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Link } from "lucide-react";
-import { useGestureResponder } from "react-gesture-responder";
 
 export default function RevealCard({
   title,
@@ -13,29 +11,13 @@ export default function RevealCard({
   bgGradient = "bg-gradient-to-br from-[#28282b] to-[#7E22CE]",
 }) {
 
- const [isTouching, setIsTouching] = useState(false);
-  const cardRef = useRef(null);
-
-  const { bind } = useGestureResponder({
-    onGrant: () => setIsTouching(true),    // finger touched
-    onRelease: () => setIsTouching(false), // finger lifted
-    onTerminate: () => setIsTouching(false), // gesture interrupted
-  });
 
  return (
     <div
-      {...bind}
-      ref={cardRef}
-      className={`relative w-[350px] h-[300px] mx-auto bg-primary rounded-[15px] ${
-        isTouching ? "shadow-[0_15px_60px_rgba(0,0,0,0.5)]" : ""
-      } group overflow-hidden`}
+      className="relative w-[350px] h-[300px] mx-auto bg-primary rounded-[15px] hover:shadow-[0_15px_60px_rgba(0,0,0,0.5)] group overflow-hidden"
     >
       <div className="absolute inset-0 p-6 z-10 flex flex-col justify-start">
-        <div
-          className={`transition-opacity duration-500 ${
-            isTouching ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-          }`}
-        >
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
           <h2 className="text-xl font-semibold text-muted">
             {altTitle || title}
           </h2>
@@ -53,19 +35,16 @@ export default function RevealCard({
       </div>
 
       <div
-        className={`absolute bottom-0 left-0 w-full h-full transition-all duration-500 rounded-[15px] ${
-          isTouching ? "h-[60px]" : "group-hover:h-[60px]"
-        } ${bgGradient} z-20`}
+        className={`absolute bottom-0 left-0 w-full h-full transition-all duration-500 rounded-[15px] group-hover:h-[60px] ${bgGradient} z-20`}
       >
         <div className="relative w-full h-full">
           <Image
             src={img}
             alt={title}
             fill
-            className={`object-cover rounded-[15px] ${
-              isTouching ? "rounded-b-[15px]" : "group-hover:rounded-b-[15px]"
-            } brightness-[0.75] transition-all duration-500`}
+            className="object-cover rounded-[15px] group-hover:rounded-b-[15px] brightness-[0.75] transition-all duration-500"
           />
+          {/* <div className="absolute inset-0 bg-white/10 w-1/2 h-full rounded-l-[15px]" /> */}
         </div>
       </div>
     </div>
