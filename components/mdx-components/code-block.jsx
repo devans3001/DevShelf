@@ -20,7 +20,7 @@ export function CodeBlock({ children, language = "jsx" }) {
   useEffect(() => {
     async function formatCode() {
       try {
-        startTransition(async () => {
+        // startTransition(async () => {
           let parser = "babel";
           let plugins = [pluginEstree, parserBabel];
 
@@ -29,12 +29,6 @@ export function CodeBlock({ children, language = "jsx" }) {
             case "md":
               parser = "markdown";
               plugins = [pluginEstree, parserMarkdown];
-              break;
-            case "ts":
-            case "tsx":
-            case "typescript":
-              parser = "babel-ts";
-              plugins = [pluginEstree, parserTS];
               break;
             default:
               parser = "babel";
@@ -48,9 +42,10 @@ export function CodeBlock({ children, language = "jsx" }) {
             singleQuote: false,
             printWidth: !md ? 60 : 80,
           });
-          setFormattedCode(result);
-        });
+           startTransition(() => setFormattedCode(result)); 
+        // });
       } catch (err) {
+        console.log("some code block error")
         console.error("Prettier format error:", err);
         setFormattedCode(children.trim());
       }

@@ -126,11 +126,12 @@ const debouncedSearch = useDebounce(searchQuery, 500);
 `}
 </CodeBlock>
 
-## useSearchParamHook()
+## 🧨 useSearchParamHook()
 Custom hook for managing URL search parameters in a Next.js App Router app.
 
-<CodeBlock language="jsx">
+<CodeBlock>
 {`
+"use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
@@ -140,11 +141,11 @@ export function useSearchParamsHook() {
 
   // Get all current search params as an object
   const params = useMemo(() => {
-    const paramsObj = {};
+    const obj = {};
     searchParams.forEach((value, key) => {
-      paramsObj[key] = value;
+      obj[key] = value;
     });
-    return paramsObj;
+    return obj;
   }, [searchParams]);
 
   // Get a specific parameter value
@@ -160,7 +161,7 @@ export function useSearchParamsHook() {
     (key, value) => {
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.set(key, value);
-      router.push(\`?${newParams.toString()}\`, { scroll: false });
+      router.push(\`?\${newParams.toString()}\`, { scroll: false });
     },
     [router, searchParams]
   );
@@ -170,30 +171,33 @@ export function useSearchParamsHook() {
     (key) => {
       const newParams = new URLSearchParams(searchParams.toString());
       newParams.delete(key);
-      router.push(\`?${newParams.toString()}\`, { scroll: false });
+      router.push(\`?\${newParams.toString()}\`, { scroll: false });
     },
     [router, searchParams]
   );
 
-   // Set multiple parameters at once from an object
+  // Set multiple parameters at once
   const setMultipleParams = useCallback(
     (params) => {
       const newParams = new URLSearchParams(searchParams.toString());
       Object.entries(params).forEach(([key, value]) => {
         newParams.set(key, value);
       });
-      router.push(\`?${newParams.toString()}\`, { scroll: false });
+      router.push(\`?\${newParams.toString()}\`, { scroll: false });
     },
     [router, searchParams]
   );
+ 
 
- return {
-    params,             // All params as key-value pairs
-    getParam,           // Get a single param
-    setParam,           // Set a single param
-    removeParam,        // Delete a single param
-    setMultipleParams,  // Set multiple at once
+  return {
+    params,              // All search params as key-value object
+    getParam,            // Get a single param
+    setParam,            // Set a single param
+    removeParam,         // Delete a single param
+    setMultipleParams,   // Set multiple at once
   };
+}
 
-}`}
+`}
 </CodeBlock>
+

@@ -2,6 +2,10 @@
 export async function GET(req) {
   const VERCEL_TOKEN = process.env.VERCEL_API_TOKEN;
 
+  if(!VERCEL_TOKEN) {
+    return new Response("Vercel API token is not set", { status: 500 });
+  }
+
   const projectsRes = await fetch("https://api.vercel.com/v9/projects", {
     headers: {
       Authorization: `Bearer ${VERCEL_TOKEN}`,
