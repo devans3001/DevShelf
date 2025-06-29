@@ -32,6 +32,7 @@ export default async function DocsIndexPage({ params }) {
   const { category } = await params;
 
   const docs = getDocsParams(category);
+  if(!docs) return notFound();
 
   const id = category || "/";
 

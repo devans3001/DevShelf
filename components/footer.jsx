@@ -22,15 +22,15 @@ import ExternalLink from "./ExternalLink";
 export function Footer() {
   const { mounted,theme, setTheme } = useThemeDetector()
  
-   if (!mounted) {
-     return (
-       <div className="relative flex items-center rounded-full bg-muted p-1">
-         <button className={` text-muted-foreground`} disabled>
-           <Sun className="h-[1.2rem] w-[1.2rem]" />
-         </button>
-       </div>
-     )
-   }
+  //  if (!mounted) {
+  //    return (
+  //      <div className="relative flex items-center rounded-full bg-muted p-1">
+  //        <button className={` text-muted-foreground`} disabled>
+  //          <Sun className="h-[1.2rem] w-[1.2rem]" />
+  //        </button>
+  //      </div>
+  //    )
+  //  }
 
   const resources = [
     { name: "Documentation", href: "/docs", icon: BookOpen },
