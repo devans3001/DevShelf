@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Link } from "lucide-react";
+import { useState } from "react";
 
 export default function RevealCard({
   title,
@@ -11,17 +12,16 @@ export default function RevealCard({
   bgGradient = "bg-gradient-to-br from-[#28282b] to-[#7E22CE]",
 }) {
 
-
- return (
+return (
     <div
       className="relative w-[350px] h-[300px] mx-auto bg-primary rounded-[15px] hover:shadow-[0_15px_60px_rgba(0,0,0,0.5)] group overflow-hidden"
     >
-      <div className="absolute inset-0 p-6 z-10 flex flex-col justify-start">
-        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+      <div className="absolute inset-0 p-3 md:p-6 z-10 flex flex-col justify-start">
+        <div className="opacity-0 max-sm:opacity-100 group-hover:opacity-100 transition-opacity duration-500">
           <h2 className="text-xl font-semibold text-muted">
             {altTitle || title}
           </h2>
-          <p className="text-sm text-muted-foreground mb-3">{description}</p>
+          <p className="text-sm text-muted-foreground sm:mb-3">{description}</p>
           <a
             href={url}
             target="_blank"
@@ -35,7 +35,7 @@ export default function RevealCard({
       </div>
 
       <div
-        className={`absolute bottom-0 left-0 w-full h-full transition-all duration-500 rounded-[15px] group-hover:h-[60px] ${bgGradient} z-20`}
+        className={`absolute bottom-0 left-0 w-full h-full transition-all duration-500 max-sm:h-[75%] rounded-[15px] group-hover:h-[60px] ${bgGradient} z-20`}
       >
         <div className="relative w-full h-full">
           <Image

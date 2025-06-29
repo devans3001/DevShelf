@@ -1,6 +1,5 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import Hammer from "hammerjs";
 import Image from "next/image";
 import { Link } from "lucide-react";
 
