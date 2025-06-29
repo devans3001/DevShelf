@@ -42,7 +42,7 @@ export function Footer() {
   const community = [
     {
       name: "GitHub",
-      href: "https://github.com/yourusername/devshelf",
+      href: "https://github.com/devans3001",
       icon: Github,
     },
     { name: "Twitter", href: "https://twitter.com/yourhandle", icon: Twitter },
@@ -75,7 +75,7 @@ export function Footer() {
             </Button>
             <Button variant="outline" size="icon" asChild>
               <Link
-                href="https://github.com/yourusername/devshelf"
+                href="https://github.com/devans3001"
                 target="_blank"
               >
                 <Github className="h-4 w-4" />
