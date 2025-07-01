@@ -34,6 +34,38 @@ const nextConfig = {
         protocol: "https",
         hostname: "icon.icepanel.io",
       },
+      {
+        protocol: "https",
+        hostname: "esbenp.gallerycdn.vsassets.io",
+      },
+      {
+        protocol: "https",
+        hostname: "wallabyjs.gallerycdn.vsassets.io",
+      },
+      {
+        protocol: "https",
+        hostname: "ritwickdey.gallerycdn.vsassets.io",
+      },
+      {
+        protocol: "https",
+        hostname: "github.gallerycdn.vsassets.io",
+      },
+      {
+        protocol: "https",
+        hostname: "formulahendry.gallerycdn.vsassets.io",
+      },
+      {
+        protocol: "https",
+        hostname: "eamodio.gallerycdn.vsassets.io",
+      },
+      {
+        protocol: "https",
+        hostname: "bradlc.gallerycdn.vsassets.io",
+      },
+      {
+        protocol: "https",
+        hostname: "dbaeumer.gallerycdn.vsassets.io",
+      },
     ],
   },
   transpilePackages: ["three", "framer-motion-3d", "framer-motion"],

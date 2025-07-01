@@ -1,0 +1,71 @@
+---
+title: "Essential VS Code Extensions"
+description: "Curated collection of must-have extensions for productive development"
+order: 13
+---
+
+# Boost Your VS Code Productivity
+
+<ProTip>
+  The right extensions can transform [VS Code] from a good editor to a
+  powerhouse IDE. Here are the essentials every developer should install.
+</ProTip>
+
+## Core Development Extensions
+
+<ExtensionCard />
+
+---
+
+## 🛠 Creating a Custom Code Snippet
+
+You can speed up repetitive coding tasks with custom snippets.
+
+### 🔧 Steps
+
+1. Open Command Palette → `Preferences: Configure User Snippets`
+
+2. Select `New Global Snippets File`
+
+3. Add your custom JSON snippet:
+
+<ProTip>
+  Use $1, $2 to define cursor positions. $0 is the final cursor stop.
+</ProTip>
+
+<CodeBlock language="json">
+  {`{
+  "React Functional Component": {
+    "prefix": "rfc",
+    "body": [
+      "import React from 'react';",
+      "",
+      "export default function $1() {",
+      "  return <div>$0</div>;",
+      "}"
+    ],
+    "description": "Create a React Functional Component"
+  }
+}`}
+</CodeBlock>
+
+<Callout type="tip">
+  {" "}
+  Enable <strong>Auto Save</strong> in Settings for better flow.{" "}
+</Callout>
+<Callout type="info">
+  {" "}
+  Use <kbd>Cmd/Ctrl</kbd> + <kbd>P</kbd> to quickly jump to files.{" "}
+</Callout>
+<Callout type="warning">
+  {" "}
+  Disable unused extensions to keep performance optimal.{" "}
+</Callout>
+
+## Resources
+
+    [VS Code Official Docs](https://code.visualstudio.com/docs)
+
+    [Snippets Guide](https://code.visualstudio.com/docs/editor/userdefinedsnippets)
+
+    [Extension Marketplace](https://marketplace.visualstudio.com/vscode)

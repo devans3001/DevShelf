@@ -12,7 +12,7 @@ import {
   RefreshCw,
   Zap, Cpu, AlertTriangle,
   Paintbrush, GitBranch,
-  Package, Scale
+  Package, Scale, Calendar, Clock, FormInput,Rocket,Bug
 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 import { Button } from "../ui/button";
@@ -25,6 +25,7 @@ import { H2, Heading } from "./Headers";
 import ExternalLink from "../ExternalLink";
 import NextjsTable from "./NextjsTable";
 import ReduxTable from "./ReduxTable";
+import { ExtensionCard } from "./Extension";
 
 
 
@@ -78,5 +79,5 @@ export const CustomComponents = {
   Moon,
   Copy,
   RefreshCw,
-  Zap, Cpu, AlertTriangle,Paintbrush, GitBranch, Package, Scale,ReduxTable
+  Zap, Cpu, AlertTriangle,Paintbrush, GitBranch, Package, Scale,ReduxTable,Calendar, Clock, FormInput,Rocket,Bug,ExtensionCard
 };

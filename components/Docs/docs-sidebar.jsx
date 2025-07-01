@@ -53,8 +53,8 @@ export const sections = [
         // subItems: "boilerplates",
       },
       {
-        name: "VS Code Setup",
-        href: "/docs/vscode",
+        name: "VS Code",
+        href: "/docs/vs-code",
         icon: <Code2 size={16} />,
         // subItems: "vscode",
       },

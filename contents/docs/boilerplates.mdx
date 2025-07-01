@@ -1,0 +1,258 @@
+---
+title: Boilerplate
+description: Complete authentication system with NextAuth.js (Email + OAuth)
+framework: nextjs
+tags: ['auth', 'nextauth', 'security', 'session']
+---
+
+## 🛠️ NextAuth.js Boilerplate with App Router
+
+**A production-ready authentication setup using NextAuth.js for Next.js App Router.**
+<ProTip> [NextAuth.js](https://next-auth.js.org) makes it easy to implement secure, flexible authentication in Next.js using OAuth, credentials, or social logins. </ProTip>
+
+### 📦 Installation
+
+<CodeBlock language="md">
+{`npm install next-auth
+`}
+</CodeBlock>
+
+### 🗂️ Project Structure
+
+still pending
+
+### 🌍 Environment Variables
+
+<CodeBlock language="md">
+{`# .env.local
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET= # Generate with: openssl rand -hex 32
+
+# Email Provider (SendGrid example)
+EMAIL_SERVER=smtp://username:password@smtp.example.com:587
+EMAIL_FROM=noreply@example.com
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_client_secret`}
+</CodeBlock>
+
+### 🔐 Setting Up Auth Route
+
+<CodeBlock language="js">
+{`
+//app/api/auth/[...nextauth]/route.js
+
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "@/lib/prisma";
+import { sendVerificationRequest } from "@/lib/email";
+
+export const authOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+      sendVerificationRequest,
+    }),
+  ],
+  callbacks: {
+    async session({ session, user }) {
+      session.user.id = user.id;
+      session.user.role = user.role; // Add custom role
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/auth/signin",
+    verifyRequest: "/auth/verify-request",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+export const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };`}
+</CodeBlock>
+
+<Callout type="tip">You can add more providers like Google, Twitter, or even custom credentials.</Callout>
+
+
+### 💼 SignIn Page (Client Side)
+
+
+<CodeBlock language="jsx">
+{`
+//app/(auth)/signin/page.jsx
+
+import { 
+  getProviders, 
+  signIn, 
+} from "next-auth/react";
+
+export default async function SignIn() {
+  const providers = await getProviders();
+  
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <h1 className="text-2xl font-bold mb-6 text-center">Sign In</h1>
+        
+        {Object.values(providers!).map((provider) => (
+          <div key={provider.name} className="mb-4">
+            <button
+              onClick={() => signIn(provider.id)}
+              className="w-full px-4 py-2 border rounded-md flex items-center justify-center gap-2
+                hover:bg-gray-50 transition-colors"
+            >
+              {provider.name === "Google" && (
+                <GoogleIcon className="w-5 h-5" />
+              )}
+              Sign in with {provider.name}
+            </button>
+          </div>
+        ))}
+        
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">Or</span>
+          </div>
+        </div>
+        
+        <EmailSignInForm />
+      </div>
+    </div>
+  );
+}`}
+</CodeBlock>
+
+### Session Provider
+
+<CodeBlock language="jsx">
+{`
+///app/providers.jsx
+"use client";
+
+import { SessionProvider } from "next-auth/react";
+
+export function Providers({ children }) {
+  return <SessionProvider>{children}</SessionProvider>;
+}`}
+</CodeBlock>
+
+### 🔒 Protecting Routes (Server Side)
+
+<CodeBlock language="jsx">
+{`
+//app/dashboard/page.jsx
+
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+
+export default async function DashboardPage() {
+  const session = await auth();
+  
+  if (!session) {
+    redirect("/auth/signin");
+  }
+
+  return (
+    <div>
+      <h1>Welcome, {session.user?.name}</h1>
+      <p>Your email: {session.user?.email}</p>
+      <SignOutButton />
+    </div>
+  );
+}`}
+</CodeBlock>
+
+### Sign Out Button
+
+<CodeBlock language="jsx">
+{`"use client";
+import { signOut } from "next-auth/react";
+import {Button} from "@/components/ui/button"
+
+export function SignOutButton() {
+  return (
+    <Button
+      onClick={() => signOut({ callbackUrl: "/" })}
+      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+    >
+      Sign Out
+    </Button>
+  );
+}`}
+</CodeBlock>
+
+###  Middleware
+<CodeBlock language="js">
+{`import { auth } from "next-auth";
+import { NextResponse } from "next/server";
+
+export default auth((req) => {
+  const protectedRoutes = ["/dashboard", "/profile"];
+  const isProtected = protectedRoutes.some((route) =>
+    req.nextUrl.pathname.startsWith(route)
+  );
+
+  if (isProtected && !req.auth) {
+    return NextResponse.redirect(new URL("/auth/signin", req.url));
+  }
+
+  return NextResponse.next();
+});
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|auth).*)"],
+};`}
+</CodeBlock>
+
+### ✅ Access Session Client-side
+
+<CodeBlock language="jsx">
+{`"use client";
+import { useSession } from "next-auth/react";
+
+export function Profile() {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (!session) return <p>Access Denied</p>;
+
+  return <p>Welcome, {session.user.name}</p>;
+}
+`}
+</CodeBlock>
+
+**Server-side Auth Access**
+
+<CodeBlock language="jsx">
+{`import { auth } from "@/auth";
+
+export default async function ProfilePage() {
+  const session = await auth();
+  
+  return (
+    <div>
+      <h1>Profile</h1>
+      <pre>{JSON.stringify(session, null, 2)}</pre>
+    </div>
+  );
+}`}
+</CodeBlock>
+
+## 📚 References
+
+    [NextAuth.js Docs](https://next-auth.js.org)
+
+    [GitHub OAuth App Setup](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps)

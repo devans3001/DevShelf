@@ -1,0 +1,217 @@
+---
+title: "Miscellaneous libraries"
+description: "Master date manipulation with date-fns and form handling with react-hook-form"
+order: 10
+---
+
+# Date Manipulation with date-fns
+
+<ProTip>
+ ' date-fns' provides comprehensive tools for manipulating dates in JavaScript. [Official Docs](https://date-fns.org/)
+</ProTip>
+
+## Installation
+
+<CodeBlock language="md">
+{`
+npm install date-fns
+# or
+yarn add date-fns
+`}
+</CodeBlock>
+
+## Core Functions
+
+**Formatting Dates**
+
+<CodeBlock language="js">
+{`import { format } from 'date-fns'
+
+// Basic formatting
+const today = format(new Date(), 'MMMM dd, yyyy') // "June 15th, 2023"
+
+// With options
+const detailedDate = format(new Date(), 'EEEE, MMMM dd, yyyy - h:mm a') 
+// "Thursday, June 15th, 2023 - 2:30 PM"`}
+</CodeBlock>
+
+### Date Arithmetic
+
+<CodeBlock language="jsx">
+{`
+import { addDays, subMonths, addYears } from 'date-fns'
+
+const tomorrow = addDays(new Date(), 1)         // 👉 Tomorrow's date (e.g., if today is 28 Jun 2025, this will be 29 Jun 2025)
+const lastMonth = subMonths(new Date(), 1)      // 👉 Same day last month (e.g., 28 May 2025)
+const nextYear = addYears(new Date(), 1)        // 👉 Same day next year (e.g., 28 Jun 2026)
+
+`}
+</CodeBlock>
+
+### Date Comparisons
+
+<CodeBlock language="jsx">
+{`import { isAfter, isBefore, isToday } from 'date-fns'
+
+
+const isFuture = isAfter(new Date(2023, 12, 1), new Date()) 
+// ✅ So this checks if Dec 1, 2023 is after today — true if today is before Dec 1, 2023
+
+const isPast = isBefore(new Date(2020, 1, 1), new Date()) 
+// ✅ 01 Feb 2020 is before today — returns true
+
+const isCurrentDay = isToday(new Date()) 
+// ✅ You're passing the current date — returns true
+`}
+</CodeBlock>
+
+### Date Differences
+
+<CodeBlock language="jsx">
+{`import { differenceInDays, formatDistance } from 'date-fns'
+
+const daysBetween = differenceInDays(
+  new Date(2023, 6, 20),
+  new Date(2023, 6, 15)
+) // 5
+
+const humanReadable = formatDistance(
+  new Date(2023, 6, 15),
+  new Date(),
+  { addSuffix: true }
+) // "5 days ago"`}
+</CodeBlock>
+
+# Form Management with `react-hook-form`
+
+<ProTip>
+`react-hook-form` provides performant, flexible forms with easy-to-use validation. [Official Docs](https://react-hook-form.com/)
+</ProTip>
+
+## Installation
+
+<CodeBlock language="md">
+{`npm install react-hook-form
+# or
+yarn add react-hook-form`}
+</CodeBlock>
+
+## Basic Form Example
+
+<CodeBlock language="jsx">
+{`import { useForm } from 'react-hook-form'
+
+function SignupForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm()
+
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input
+        {...register('username', { required: 'Username is required' })}
+        placeholder="Username"
+      />
+      {errors.username && <span>{errors.username.message}</span>}
+
+      <input
+        {...register('email', { 
+          required: 'Email is required',
+          pattern: {
+            value: /^\S+@\S+$/i,
+            message: 'Invalid email format'
+          }
+        })}
+        placeholder="Email"
+      />
+      {errors.email && <span>{errors.email.message}</span>}
+
+      <button type="submit">Sign Up</button>
+    </form>
+  )
+}`}
+</CodeBlock>
+
+### Advanced Features 
+
+**Form Validation**
+
+<CodeBlock language="jsx">
+{`const { register, formState: { errors } } = useForm({
+  defaultValues: {
+    username: '',
+    password: ''
+  },
+  mode: 'onChange'
+})
+
+<input
+  {...register('password', {
+    required: 'Password is required',
+    minLength: {
+      value: 8,
+      message: 'Password must be at least 8 characters'
+    }
+  })}
+  type="password"
+/>`}
+</CodeBlock>
+
+### Handling Dates with date-fns Integration
+
+<CodeBlock language="jsx">
+{`import { format, parseISO } from 'date-fns'
+
+function DateForm() {
+  const { register, handleSubmit } = useForm()
+
+  const onSubmit = ({ date }) => {
+    const formattedDate = format(parseISO(date), 'MMMM do, yyyy')
+    console.log(formattedDate)
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input 
+        type="date" 
+        {...register('date', { required: true })}
+      />
+      <button type="submit">Format Date</button>
+    </form>
+  )
+}`}
+</CodeBlock>
+
+### Performance Optimization
+
+<CodeBlock language="jsx">
+{`// Only re-render when specific fields change
+const { watch } = useForm()
+const username = watch('username')
+
+// Debounced form submission
+const { handleSubmit } = useForm()
+const debouncedSubmit = debounce(handleSubmit(data => {
+  // Submit logic
+}), 500)
+
+<form onSubmit={debouncedSubmit}>
+  {/* form fields */}
+</form>`}
+</CodeBlock>
+
+## Resources
+
+**date-fns**
+
+[Cheat Sheet](https://devhints.io/date-fns)
+
+[Formatting Options](https://date-fns.org/v2.30.0/docs/format)
+
+**react-hook-form**
+
+[API Reference](https://react-hook-form.com/api)
+
+[Form Builder](https://react-hook-form.com/form-builder)
