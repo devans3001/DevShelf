@@ -1,6 +1,5 @@
 "use client";
 
-
 //found out that what might have cause the issue was using useTransition in this component
 import { useState, useEffect, useMemo, useTransition } from "react";
 import {
@@ -81,17 +80,17 @@ export default function SearchBar() {
       fetch("/api/search/mdx")
         .then((res) => res.json())
         .then(setDocs);
-    })
+    });
   }, []);
 
   // Initialize Fuse only once when docs load
   const fuse = useMemo(() => {
     return new Fuse(docs, {
       keys: [
-        { name: "title", weight: 0.5 },
-        { name: "keywords", weight: 2 },
+        { name: "title", weight: 0.8 },
+        { name: "keywords", weight: 1 },
         { name: "slug", weight: 1 },
-        { name: "content", weight: 3 },
+        // { name: "content", weight: 3 },
         { name: "headings.text", weight: 0.5 },
       ],
       includeScore: true,
@@ -99,7 +98,9 @@ export default function SearchBar() {
       minMatchCharLength: 2,
       ignoreLocation: true,
     });
-  }, [docs]); 
+  }, [docs]);
+
+  // console.log("fuse",fuse)
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -110,7 +111,7 @@ export default function SearchBar() {
       setResults(searchResults);
     }
   }, [query]);
-  // console.log(" result", results);
+  console.log(" result", results);
 
   useEffect(() => {
     const down = (e) => {
@@ -127,7 +128,7 @@ export default function SearchBar() {
 
   const handleSelect = (id) => {
     setOpen(false);
-    const selected = docs.find((doc) => doc.slug === id);
+    const selected = docs.find((doc) => doc.title === id);
     console.log("selectd", selected);
     if (selected) router.push(`/${selected.slug}`);
   };
@@ -143,28 +144,35 @@ export default function SearchBar() {
           onValueChange={setQuery}
         />
         <CommandList className="max-h-[70vh]">
-          <CommandEmpty>
+          {/* <CommandEmpty>
             No results found. Try a different search term.
-          </CommandEmpty>
+          </CommandEmpty> */}
 
-        {  <CommandGroup heading="Documentation">
+          {
+            <CommandGroup heading="Documentation" forceMount={true}>
               {results?.map((item) => (
                 <CommandItem
-                  key={item.slug}
-                  value={item.slug}
-                  onSelect={() => handleSelect(item.slug)}
+                  key={item.id}
+                  forceMount={true}
+                  value={item.title}
+                  onSelect={() => handleSelect(item.title)}
                 >
                   <div className="mr-2">
                     {" "}
                     {item.icon || <FileText className="w-4 h-4" />}
                   </div>
                   <span>{item.title}</span>
+                  {/* Headings Preview */}
+                  {item.headings?.length > 0 && (
+                    <div className="ml-6 mt-1 text-xs text-muted-foreground line-clamp-3">
+                      {item.headings.map((h) => h.text).join(" • ")}
+                    </div>
+                  )}
                 </CommandItem>
               ))}
-           
-            </CommandGroup>}
+            </CommandGroup>
+          }
 
-      
           <CommandSeparator />
 
           <CommandGroup heading="Quick Actions">
@@ -179,7 +187,6 @@ export default function SearchBar() {
             ))}
           </CommandGroup>
         </CommandList>
-    
 
         {/* Footer */}
         <div className="p-2 text-xs text-muted-foreground border-t flex items-center justify-between">

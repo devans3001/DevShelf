@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Moon, Sun, Monitor } from "lucide-react"
 import { useThemeDetector } from "@/hooks/useThemeDetector"
 
-const TOGGLE_CLASSES = "relative z-10 flex items-center justify-center w-10 h-10 rounded-full"
+const TOGGLE_CLASSES = "relative z-10 flex items-center justify-center w-10 h-10 rounded-ful"
 
 export function ModeToggle() {
  const { mounted,theme, setTheme, systemTheme } = useThemeDetector()
@@ -36,7 +36,7 @@ export function ModeToggle() {
   ]
 
   return (
-    <div className="relative flex items-center gap-1 rounded-full bg-muted p-1">
+    <div className="relative flex items-center gap-1.5 rounded-full bg-muted p-1">
       <motion.div
         className="absolute left-0 z-0 h-10 w-10 rounded-full bg-primary"
         initial={false}
@@ -59,7 +59,7 @@ export function ModeToggle() {
           onClick={() => setTheme(pos.theme)}
         >
           {pos.icon}
-          <span className="sr-only">{pos.theme}</span>
+          {/* <span className="sr-only">{pos.theme}</span> */}
         </button>
       ))}
     </div>

@@ -12,10 +12,10 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       <Hero />
-      <TechStack/>
       <Features />
       <CTA />
       <ProjectShowcase/>
+      <TechStack/>
       
       <ScrollToTop />
 

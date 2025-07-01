@@ -41,7 +41,7 @@ function CTA() {
   };
 
   return (
-    <section className="container mx-auto px-4 py-32">
+    <section className="container mx-auto px-4 py-25">
       <motion.div
         ref={ref}
         onMouseMove={handleMouseMove}

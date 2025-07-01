@@ -45,7 +45,7 @@ export function Footer() {
       href: "https://github.com/devans3001",
       icon: Github,
     },
-    { name: "Twitter", href: "https://twitter.com/yourhandle", icon: Twitter },
+    { name: "Twitter", href: "https://x.com/devansvibes", icon: Twitter },
     { name: "Discord", href: "https://discord.gg/yourinvite", icon: LifeBuoy },
   ];
 

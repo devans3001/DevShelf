@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 
 export default function NotFound() {
   const pathname = usePathname();
-  const isAPIRoute = pathname.startsWith('/api');
-  const isDev = process.env.NODE_ENV === 'development';
+  const isAPIRoute = pathname.startsWith("/api");
+  const isDev = process.env.NODE_ENV === "development";
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-12 bg-gradient-to-b from-background to-muted/20">
@@ -21,14 +21,25 @@ export default function NotFound() {
         className="max-w-md mx-auto"
       >
         <div className="relative mb-8">
-          <Ghost className="w-24 h-24 text-primary mx-auto" />
+          <motion.div
+            animate={{
+              y: [0, -15, 0], // Moves up 15px and back down
+            }}
+            transition={{
+              duration: 2, // One full cycle takes 2 seconds
+              repeat: Infinity, // Loop forever
+              ease: "easeInOut", // Smooth acceleration/deceleration
+            }}
+          >
+            <Ghost className="w-24 h-24 text-primary mx-auto" />
+          </motion.div>
           <Terminal className="absolute -right-4 -bottom-4 w-10 h-10 text-purple-600 bg-background rounded-md p-1 border" />
         </div>
 
         <h1 className="text-3xl md:text-4xl font-bold mb-3">
           404: Resource Not Found
         </h1>
-        
+
         <div className="bg-secondary/50 p-4 rounded-lg mb-6 font-mono text-sm text-left overflow-x-auto">
           <p className="text-muted-foreground mb-2">Requested path:</p>
           <code className="text-foreground break-all">{pathname}</code>
@@ -40,7 +51,8 @@ export default function NotFound() {
           </p>
         ) : (
           <p className="text-muted-foreground mb-6">
-            The resource you requested couldn't be located in the application bundle.
+            The resource you requested couldn't be located in the application
+            bundle.
           </p>
         )}
 
@@ -51,7 +63,7 @@ export default function NotFound() {
               Return Home
             </Link>
           </Button>
-          
+
           <Button asChild variant="secondary" className="gap-2">
             <Link href="/docs">
               <Code2 className="w-4 h-4" />
@@ -66,7 +78,8 @@ export default function NotFound() {
               Development Hint
             </h3>
             <p className="text-xs text-destructive/80">
-              This route isn't matched in your app router. Check your page.tsx files.
+              This route isn't matched in your app router. Check your page.tsx
+              files.
             </p>
           </div>
         )}
@@ -81,12 +94,14 @@ export default function NotFound() {
           </h3>
           <div className="space-y-2 text-sm">
             <p>
-              <span className="text-muted-foreground">Route:</span>{' '}
+              <span className="text-muted-foreground">Route:</span>{" "}
               <code className="bg-secondary px-1 rounded">{pathname}</code>
             </p>
             <p>
-              <span className="text-muted-foreground">Environment:</span>{' '}
-              <code className="bg-secondary px-1 rounded">{process.env.NODE_ENV}</code>
+              <span className="text-muted-foreground">Environment:</span>{" "}
+              <code className="bg-secondary px-1 rounded">
+                {process.env.NODE_ENV}
+              </code>
             </p>
             <p className="pt-2 text-muted-foreground text-xs">
               Tip: Check your app router structure in /app directory
