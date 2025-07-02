@@ -1,0 +1,198 @@
+---
+title: Testing in Modern Frontend Apps
+description: Learn how to test your frontend code with tools like Jest, React Testing Library, Cypress, and more.
+keywords:
+  [
+    "testing",
+    "jest",
+    "vitest",
+    "react-testing-library",
+    "cypress",
+    "msw",
+    "unit testing",
+    "e2e",
+  ]
+order: 15
+---
+
+# 🧪 Testing in Frontend Apps
+
+Testing ensures your app works as expected before your users interact with it. Whether you're building a design system or an interactive dashboard, **testing saves you from bugs in production**.
+
+<Callout type="info">
+  This guide covers the 3 main types of testing in frontend development:
+</Callout>
+
+- ✅ **Unit Testing** — testing individual functions or components
+
+- 🔁 **Integration Testing** — testing interactions between components or modules
+
+- 🌐 **End-to-End Testing (E2E)** — testing the whole app like a user would
+
+---
+
+## 🧩 Unit Testing with Jest
+
+<ProTip>
+
+[Jest](https://jestjs.io/) is the most widely used testing framework for JavaScript.
+
+</ProTip>
+
+<CodeBlock language="md">
+  {`
+npm install --save-dev jest babel-jest @testing-library/react
+`}
+</CodeBlock>
+
+<CodeBlock language="jsx"> {` import { sum } from "./math";
+
+test("adds numbers", () => {
+expect(sum(1, 2)).toBe(3);
+});
+`}
+
+</CodeBlock>
+
+<ProTip> Use `describe()` to group related tests together. </ProTip>
+
+## 🧪 Testing Components with React Testing Library
+
+**[React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) focuses on testing how the user interacts with your UI, not its implementation.**
+
+<CodeBlock language="md">
+{`npm install --save-dev @testing-library/react @testing-library/jest-dom
+`}
+</CodeBlock>
+
+<CodeBlock language="jsx"> {` import { render, screen } from "@testing-library/react"; import userEvent from "@testing-library/user-event"; import { Button } from "@/components/ui/button";
+
+test("calls onClick", () => {
+const handleClick = jest.fn();
+render(<Button onClick={handleClick}>Click me</Button>);
+userEvent.click(screen.getByText("Click me"));
+expect(handleClick).toHaveBeenCalled();
+});
+`}
+</CodeBlock>
+
+## ⚡ Vitest: Modern Alternative to Jest
+
+**[Vitest](https://vitest.dev/) is blazing fast and integrates tightly with Vite-based apps.**
+
+<CodeBlock language="md">
+{`npm install -D vitest jsdom @testing-library/react
+`}
+</CodeBlock>
+
+Add to your package.json:
+
+<CodeBlock language="json">
+{`{
+  "scripts": {
+    "test": "vitest"
+  }
+}
+`}
+</CodeBlock>
+
+<CodeBlock language="jsx"> {` import { render } from "@testing-library/react"; import { describe, it, expect } from "vitest";
+
+describe("App", () => {
+it("renders properly", () => {
+const { getByText } = render(<h1>Hello World</h1>);
+expect(getByText("Hello World")).toBeTruthy();
+});
+});
+`}
+</CodeBlock>
+
+## 🌍 End-to-End Testing with Cypress
+
+[Cypress](https://www.cypress.io/) allows you to run full browser tests.
+<CodeBlock language="md">
+{`
+npm install cypress --save-dev
+
+`}
+</CodeBlock>
+
+add a script:
+
+<CodeBlock language="json">
+{`{
+  "scripts": {
+    "cypress": "cypress open"
+  }
+}
+
+`}
+</CodeBlock>
+
+<CodeBlock language="js"> {` describe('Homepage', () => { it('loads successfully', () => { cy.visit('/'); cy.contains('Welcome'); }); }); `} </CodeBlock>
+
+## 🔌 Mocking API Requests with MSW
+
+[MSW (Mock Service Worker)](https://mswjs.io/) is useful for mocking API requests at the network level, perfect for both tests and dev environments.
+
+<CodeBlock language="md">
+{`npm install msw --save-dev
+`}
+</CodeBlock>
+
+<CodeBlock language="jsx">
+{`// src/mocks/handlers.js
+import { rest } from "msw";
+
+export const handlers = [
+  rest.get("/api/user", (req, res, ctx) => {
+    return res(ctx.json({ name: "Devans" }));
+  }),
+];
+`}
+</CodeBlock>
+
+<Callout type="tip"> Test the behavior, not the implementation. Think like a user. </Callout> 
+
+## What to Test (and What Not To)
+
+✅ Do Test:
+
+<ProTip>
+Core business logic
+
+Utility/helper functions
+
+Component rendering with critical props
+
+API route handlers (input validation, error cases)
+
+Critical user flows (auth, checkout, etc.)
+
+</ProTip>
+
+❌ Don't Waste Time On:
+
+<CommonMistake>
+Third-party library code
+
+Static/boilerplate code
+
+Implementation details (test behavior, not internals)
+
+Visual appearance (use Storybook for this)
+
+</CommonMistake>
+
+
+## 📚 Resources
+
+    [Jest Docs](https://jestjs.io/docs/getting-started)
+
+    [Testing Library Docs](https://testing-library.com/docs/)
+
+    [Cypress Docs](https://docs.cypress.io/)
+
+    [Vitest Docs](https://vitest.dev/)
+
+    [MSW Docs](https://mswjs.io/docs/)

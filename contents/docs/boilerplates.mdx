@@ -3,12 +3,15 @@ title: Boilerplate
 description: Complete authentication system with NextAuth.js (Email + OAuth)
 framework: nextjs
 tags: ['auth', 'nextauth', 'security', 'session']
+order: 13
 ---
 
 ## 🛠️ NextAuth.js Boilerplate with App Router
 
 **A production-ready authentication setup using NextAuth.js for Next.js App Router.**
-<ProTip> [NextAuth.js](https://next-auth.js.org) makes it easy to implement secure, flexible authentication in Next.js using OAuth, credentials, or social logins. </ProTip>
+<ProTip> 
+[NextAuth.js](https://next-auth.js.org) makes it easy to implement secure, flexible authentication in Next.js using OAuth, credentials, or social logins. 
+</ProTip>
 
 ### 📦 Installation
 
@@ -19,7 +22,36 @@ tags: ['auth', 'nextauth', 'security', 'session']
 
 ### 🗂️ Project Structure
 
-still pending
+<FileStructure>
+my-next-app/
+├─ app/                      → App Router structure (recommended)
+│  ├─ layout.js              → Root layout (shared across all routes)
+│  ├─ page.js                → Root page (acts like index.html)
+│  ├─ about/                 → Nested route (/about)
+│  │  └─ page.js             → About page
+│  ├─ dashboard/             → Protected or user-specific routes
+│  │  ├─ layout.js           → Dashboard layout
+│  │  └─ page.js             → Dashboard homepage
+│  ├─ api/                   → Route Handlers (API endpoints)
+│  │  └─ auth/               → Authentication API
+│  │     └─ [...nextauth]/route.js → NextAuth route
+├─ components/               → Reusable UI components (Buttons, Modals, etc.)
+├─ lib/                      → Utility functions, helpers, configs
+│  ├─ auth.js                → Authentication logic (e.g. getSession)
+│  └─ db.js                  → DB connection logic or Supabase helpers
+├─ hooks/                    → Custom React hooks (e.g. useUser, useDebounce)
+├─ contents/                 → MDX content files and documentation
+├─ public/                   → Static files (images, fonts, favicon, etc.)
+├─ styles/                   → Global styles (CSS or Tailwind)
+│  └─ globals.css
+├─ middleware.js             → Middleware (e.g. auth, redirects)
+├─ next.config.js            → Next.js configuration
+├─ tailwind.config.js        → TailwindCSS configuration
+├─ postcss.config.js         → PostCSS configuration
+├─ package.json              → Project metadata and dependencies
+└─ README.md                 → Project documentation
+
+</FileStructure>
 
 ### 🌍 Environment Variables
 
@@ -54,8 +86,8 @@ export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
     EmailProvider({
       server: process.env.EMAIL_SERVER,
@@ -104,7 +136,7 @@ export default async function SignIn() {
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h1 className="text-2xl font-bold mb-6 text-center">Sign In</h1>
         
-        {Object.values(providers!).map((provider) => (
+        {Object.values(providers).map((provider) => (
           <div key={provider.name} className="mb-4">
             <button
               onClick={() => signIn(provider.id)}
