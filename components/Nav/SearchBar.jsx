@@ -29,24 +29,28 @@ import Fuse from "fuse.js";
 // dont use useTransition inside a useEffect
 const docsSections = [
   {
-    id: "snippets",
-    title: "Code Snippets",
+    id: "docs",
+    title: "Welcome to DevShelf Docs",
     icon: <Code className="w-4 h-4" />,
+    slug: "docs",
   },
   {
     id: "boilerplates",
     title: "Boilerplates",
     icon: <FileText className="w-4 h-4" />,
+    slug: "docs/boilerplates",
   },
   {
     id: "vscode",
-    title: "VS Code Extensions",
+    title: "Essential VS Code Extensions",
     icon: <Zap className="w-4 h-4" />,
+    slug: "docs/vs-code",
   },
   {
-    id: "packages",
-    title: "NPM Packages",
+    id: "testing",
+    title: "Testing in Modern Frontend Apps",
     icon: <Package className="w-4 h-4" />,
+    slug: "docs/testing",
   },
 ];
 
@@ -153,7 +157,7 @@ export default function SearchBar() {
               {results?.map((item) => (
                 <CommandItem
                   key={item.id}
-                  forceMount={true}
+                  forceMount={true} // this added more search content
                   value={item.title}
                   onSelect={() => handleSelect(item.title)}
                 >
