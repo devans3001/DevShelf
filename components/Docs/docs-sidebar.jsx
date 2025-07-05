@@ -67,6 +67,7 @@ export const sections = [
         name: "Essential Packages",
         href: "/docs/packages",
         icon: <Package size={16} />,
+        subItems: "packages",
       },
       {
         name: "Performance Tools",

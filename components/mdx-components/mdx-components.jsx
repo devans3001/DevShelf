@@ -24,6 +24,7 @@ import ExternalLink from "../ExternalLink";
 import NextjsTable from "./NextjsTable";
 import ReduxTable from "./ReduxTable";
 import { ExtensionCard } from "./Extension";
+import { ImageComp } from "./ImageComp";
 
 
 
@@ -77,5 +78,5 @@ export const CustomComponents = {
   Moon,
   Copy,
   RefreshCw,
-  Zap, Cpu, AlertTriangle,Paintbrush, GitBranch, Package, Scale,ReduxTable,Calendar, Clock, FormInput,Rocket,Bug,ExtensionCard
+  Zap, Cpu, AlertTriangle,Paintbrush, GitBranch, Package, Scale,ReduxTable,Calendar, Clock, FormInput,Rocket,Bug,ExtensionCard,ImageComp
 };

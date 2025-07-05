@@ -1,0 +1,227 @@
+---
+title: The Complete Git & GitHub Mastery Guide
+category: Version Control
+description: From basic commits to advanced team workflows - everything about Git and GitHub
+tags: ["git", "github", "version-control", "collaboration"]
+order: 15
+---
+
+## 🛠️ Git Installation
+
+<ProTip>
+  Git is the most widely used version control system for tracking code changes,
+  collaborating with others, and managing your project history. It's essential
+  for any developer.
+</ProTip>
+
+---
+
+### 🔗 Download Git
+
+[Download Git](https://git-scm.com/downloads) — Official installers for Windows, macOS, and Linux.
+
+---
+
+### 📦 Install Git on Different Platforms
+
+**Windows**
+
+- Download the .exe installer from the link above.
+
+- Run the installer.
+
+- Choose the default options unless you have specific preferences (e.g., choosing the default branch as main).
+
+- After installation, open Git Bash or use Git directly from your terminal or VS Code.
+
+**🍎 macOS**
+
+<CodeBlock language="md">
+{`# Using Homebrew (recommended)
+brew install git
+`}
+</CodeBlock>
+
+Or install it via [Git for macOS](https://git-scm.com/download/mac)
+
+**🐧 Linux (Ubuntu/Debian)**
+
+<CodeBlock language="md">
+{`sudo apt update
+sudo apt install git
+`}
+</CodeBlock>
+
+<Callout type="info">
+Run git --version in your terminal to verify a successful installation.
+</Callout>
+
+### First-Time Config
+
+<CodeBlock language="md">
+{`# Set your name for commit attribution
+git config --global user.name "Your Name"
+
+# Set your email for commit attribution (should match your GitHub email for verified commits)
+git config --global user.email "your@email.com"
+
+
+# Set VS Code as the default editor for Git (e.g., for commit messages, rebase, etc.)
+git config --global core.editor "code --wait"
+
+# 🔥 Useful Git Aliases
+
+# Show pretty commit graph (great for visualizing branching)
+git config --global alias.graph "log --all --decorate --oneline --graph"
+
+# Short status output with branch info and staged/unstaged files
+git config --global alias.st "status -sb"
+`}
+</CodeBlock>
+
+### 📦 Repository Basics
+
+Starting a Project
+
+<CodeBlock language="md">
+{`# Initialize new repo
+git init
+
+# Clone existing repo
+git clone https://github.com/user/repo.git
+git clone --depth=1 https://...  # Shallow clone (faster)
+
+# Connect local to remote
+git remote add origin https://github.com/user/repo.git`}
+</CodeBlock>
+
+---
+
+### The Git Workflow
+
+<ImageComp 
+  src="/deepseek_mermaid_20250705_1b45d2.png" 
+  alt="The Git Workflow" 
+  caption="The Git Workflow" 
+/>
+
+---
+
+### 🔄 Daily Commands
+
+<CodeBlock language="md">
+{`# Check status
+git status
+
+# Stage changes
+git add file.txt
+git add .              # All files
+git add -p             # Interactive staging
+
+# Commit changes
+git commit -m "Message"
+git commit -am "Msg"   # Add & commit tracked files
+git commit --amend     # Fix last commit
+
+# View history
+git log
+git log -p             # With changes
+git log --since="2 weeks ago"
+git log --author="Name"`}
+</CodeBlock>
+
+---
+
+### 🌿 Branching Strategies
+Branch Operations
+
+<CodeBlock language="md">
+{`# Create branch
+git branch feature-x
+git checkout -b hotfix  # Create & switch
+
+# List branches
+git branch              # Local
+git branch -r           # Remote
+git branch -a           # All
+
+# Delete branches
+git branch -d branch    # Local
+git push origin --delete branch  # Remote`}
+</CodeBlock>
+
+---
+
+### Popular Branching Models
+
+1. Git Flow:
+
+<ImageComp src="/deepseek_mermaid_20250705_17ad1b.png" alt="Git flow"/>
+
+2. GitHub Flow (Simpler):
+
+<ImageComp src="/deepseek_mermaid_20250705_4b2d96.png" alt="GitHub flow"/>
+
+### 🤝 Collaboration Workflows
+
+**Fork & PR Flow**
+
+1. Fork repository on GitHub
+
+2. Clone your fork locally
+
+3. Add upstream remote:
+
+<CodeBlock language="md">
+{`git remote add upstream https://github.com/original/repo.git`}
+</CodeBlock>
+
+4. Sync with upstream:
+
+<CodeBlock language="md">
+{`git fetch upstream
+git merge upstream/main`}
+</CodeBlock>
+
+### Team Collaboration
+
+<CodeBlock language="md">
+{`# Fetch changes
+git fetch origin
+
+# Merge strategies
+git merge branch        # Regular merge
+
+git rebase branch      # Linear history
+
+git merge --squash branch  # Single commit
+
+# Resolve conflicts
+git mergetool          # Use configured tool
+
+git add resolved-file
+
+git commit`}
+</CodeBlock>
+
+<ProTip>
+Atomic Commits: Small, single-purpose commits
+</ProTip>
+
+<Callout type="tip" title="Meaningful Messages:">
+feat: add user authentication
+
+fix: resolve login timeout issue
+
+docs: update API reference
+</Callout>
+
+## 📚 Learning Resources
+
+    [Git Official Documentation](https://git-scm.com/doc)
+
+    [GitHub Skills](https://skills.github.com/)
+
+    [Git Flight Rules](https://github.com/k88hudson/git-flight-rules)
+
+    [Git Gud Game](https://filecr.com/pc-games/git-gud-free-download-for-windows/)
